@@ -82,7 +82,7 @@ public class CalendarServiceImpl implements CalendarService{
         return DayResponseDTO
                 .builder()
                 .date(dayRequestDTO.getDay())
-                .photos(buildPhotoResponseList(photos))
+                .photos(buildPhotoResponseList(photos, true))
                 .build();
     }
 
@@ -97,29 +97,25 @@ public class CalendarServiceImpl implements CalendarService{
             response.add(DayResponseDTO
                     .builder()
                     .date(finalDayIterator)
-                    .photos(buildPhotoResponseList(photoListForDayIterator))
+                    .photos(buildPhotoResponseList(photoListForDayIterator, false))
                     .build());
         }
         return response;
     }
 
-    private List<PhotoResponseDTO> buildPhotoResponseList(List<Photo> photos) {
+    private List<PhotoResponseDTO> buildPhotoResponseList(List<Photo> photos, boolean isGetDay) {
         List<PhotoResponseDTO> photoResponseDTOS = new ArrayList<>();
         for (Photo photo : photos) {
             photoResponseDTOS.add(PhotoResponseDTO
                     .builder()
                     .location(photo.getLocation())
-                    .dateTimeOfCreation(photo.getDateOfCreation())
+                    .dateOfCreation(photo.getDateOfCreation())
                     .accountId(photo.getAccountId())
-                    .nameFile(photo.getNameFile())
-                    .photo(s3Service.getObject(buildKey()))
+                    .fileName(photo.getFileName())
+                    .photo((photoResponseDTOS.size() == 0 || isGetDay) ? s3Service.getObject(photo.getKey().toString()) : null)
                     .build());
         }
         return photoResponseDTOS;
     }
 
-//    add solution for key
-    private String buildKey() {
-        return null;
-    }
 }
