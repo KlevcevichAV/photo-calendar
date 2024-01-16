@@ -13,6 +13,7 @@ import com.klevtcevichav.photocalendar.exception.UserException;
 import com.klevtcevichav.photocalendar.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserRequestMapper userRequestMapper;
     private final UserUpdateRequestMapper userUpdateRequestMapper;
     private final UserResponseMapper userResponseMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public SimpleResponseDTO registrationUser(UserRequestDTO userRequestDTO) {
@@ -35,7 +37,7 @@ public class UserServiceImpl implements UserService {
             throw new UserException("This email or username is exist!");
         }
 
-        //TODO: add security for password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
         return new SimpleResponseDTO();
@@ -76,6 +78,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SimpleResponseDTO updatePassword(UserUpdatePasswordDTO userUpdatePasswordDTO) {
-        return null;
+        User user = userRepository.findById(userUpdatePasswordDTO.getId())
+                .orElseThrow(() -> new UserException("User not found with id : %d".formatted(userUpdatePasswordDTO.getId()))
+                );
+
+        if (!userUpdatePasswordDTO.getPassword().equals(userUpdatePasswordDTO.getConfirmPassword())) {
+            throw new RuntimeException("Password and confirm password are not equals!");
+        }
+
+        if (user.getPassword().equals(userUpdatePasswordDTO.getPassword())) {
+            throw new RuntimeException("Old password and new password is equals!");
+        }
+
+        user.setPassword(passwordEncoder.encode(userUpdatePasswordDTO.getPassword()));
+
+        return new SimpleResponseDTO();
     }
 }
