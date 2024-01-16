@@ -1,15 +1,16 @@
 package com.klevtcevichav.photocalendar.dto.request;
 
-import com.klevtcevichav.photocalendar.core.dto.AbstractDTO;
+import com.klevtcevichav.photocalendar.core.dto.request.SimpleRequestDTO;
 import lombok.AllArgsConstructor;
-import lombok.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class CalendarRequestDTO extends AbstractDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class CalendarRequestDTO extends SimpleRequestDTO {
 
 //    maybe remove because we will have account id in the token :) but now will TAK :0
     private Long accountId;

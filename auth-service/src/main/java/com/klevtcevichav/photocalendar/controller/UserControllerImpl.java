@@ -18,21 +18,22 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/users")
-//TODO add mappings to requests
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
 
     @Override
-    public ResponseEntity<SimpleResponseDTO> registerUser(@RequestBody @Valid UserRequestDTO userRequestDTO) {
+    @PostMapping("/registration")
+    public ResponseEntity<SimpleResponseDTO> registrationUser(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         log.info("start registration user: {}", userRequestDTO);
 
-        SimpleResponseDTO simpleResponseDTO = userService.registerUser(userRequestDTO);
+        SimpleResponseDTO simpleResponseDTO = userService.registrationUser(userRequestDTO);
 
         return new ResponseEntity<>(simpleResponseDTO, HttpStatus.CREATED);
     }
 
     @Override
+    @PatchMapping("/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(@RequestBody @Valid UserUpdateRequestDTO userUpdateRequestDTO) {
         log.info("Start updating user: {}", userUpdateRequestDTO);
         UserResponseDTO userResponseDTO = userService.updateUser(userUpdateRequestDTO);
@@ -41,6 +42,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    @DeleteMapping("/{id}")
     public ResponseEntity<SimpleResponseDTO> delete(@PathVariable("id") @Positive Long id) {
         log.info("Start deletion user with id: {}", id);
         SimpleResponseDTO simpleResponseDTO = userService.delete(id);
@@ -49,6 +51,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable("id") @Positive  Long id) {
         log.info("Start finding user with id: {}", id);
         UserResponseDTO userResponseDTO = userService.getUserById(id);
@@ -57,6 +60,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    @PatchMapping("/{id}/changePassword")
     public ResponseEntity<SimpleResponseDTO> updatePassword(@RequestBody @ Valid UserUpdatePasswordDTO userUpdatePasswordDTO) {
         log.info("Start updating password with id: {}", userUpdatePasswordDTO.getId());
         SimpleResponseDTO simpleResponseDTO = userService.updatePassword(userUpdatePasswordDTO);

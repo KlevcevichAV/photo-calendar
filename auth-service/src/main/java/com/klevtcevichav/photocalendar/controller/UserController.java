@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserController {
 
-    ResponseEntity<SimpleResponseDTO> registerUser(UserRequestDTO userRequestDTO);
+    ResponseEntity<SimpleResponseDTO> registrationUser(UserRequestDTO userRequestDTO);
     ResponseEntity<UserResponseDTO> updateUser(UserUpdateRequestDTO userUpdateRequestDTO);
     ResponseEntity<SimpleResponseDTO> delete(Long id);
     ResponseEntity<UserResponseDTO> getUserById(Long id);

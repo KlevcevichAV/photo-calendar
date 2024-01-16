@@ -1,19 +1,25 @@
 package com.klevtcevichav.photocalendar.dto.request;
 
+
 import com.klevtcevichav.photocalendar.core.dto.request.SimpleRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
+import java.time.LocalDate;
+
 @Getter
 @Setter
-public class MonthRequestDTO extends SimpleRequestDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class AddPhotoRequestDTO extends SimpleRequestDTO {
 
-    //    maybe remove because we will have account id in the token :) but now will TAK :0
+    private byte[] photo;
     private Long accountId;
-    private Long year;
-    private Long month;
+    private String fileName;
+    private LocalDate dateOfCreation;
+    private String location;
+
+
 }

@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/accounts")
-//TODO add mappings
 public class AccountControllerImpl implements AccountController{
 
     private final AccountService accountService;
 
     @Override
+    @PostMapping("/{userId}")
     public ResponseEntity<AccountResponseDTO> createAccount(@PathVariable(name = "userId") @Positive Long userId) {
         AccountResponseDTO accountResponseDTO = accountService.createAccount(userId);
 
@@ -27,6 +27,7 @@ public class AccountControllerImpl implements AccountController{
     }
 
     @Override
+    @PutMapping("/{id}")
     public ResponseEntity<AccountResponseDTO> updateAccount(@RequestBody @Valid AccountUpdateRequestDTO accountUpdateRequestDTO) {
         AccountResponseDTO accountResponseDTO = accountService.updateAccount(accountUpdateRequestDTO);
 
@@ -34,6 +35,7 @@ public class AccountControllerImpl implements AccountController{
     }
 
     @Override
+    @DeleteMapping("/{id}")
     public ResponseEntity<SimpleResponseDTO> deleteAccount(@PathVariable(name = "id") @Positive Long id) {
         SimpleResponseDTO responseDTO = accountService.deleteAccount(id);
 
@@ -41,6 +43,7 @@ public class AccountControllerImpl implements AccountController{
     }
 
     @Override
+    @GetMapping("/{id}")
     public ResponseEntity<AccountResponseDTO> getAccount(@PathVariable(name = "id") @Positive Long id) {
         AccountResponseDTO accountResponseDTO = accountService.getAccount(id);
 
@@ -48,6 +51,7 @@ public class AccountControllerImpl implements AccountController{
     }
 
     @Override
+    @GetMapping("/user/{userId}")
     public ResponseEntity<AccountResponseDTO> getAccountByUserId(@PathVariable(name = "userId") @Positive Long userId) {
         AccountResponseDTO accountResponseDTO = accountService.getAccountByUserId(userId);
 

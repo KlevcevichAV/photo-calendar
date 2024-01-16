@@ -1,10 +1,7 @@
 package com.klevtcevichav.photocalendar.dto.response;
 
-import com.klevtcevichav.photocalendar.core.dto.AbstractDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.klevtcevichav.photocalendar.core.entity.FullAbstractEntity;
 import lombok.*;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -13,11 +10,11 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PhotoResponseDTO extends AbstractDTO {
+public class PhotoResponseDTO extends FullAbstractEntity {
 
     private Long accountId;
-    private String nameFile;
-    private LocalDate dateTimeOfCreation;
+    private String fileName;
+    private LocalDate dateOfCreation;
     private byte[] photo;
     private String location;
 //    private List<String> tags;

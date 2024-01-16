@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserResponseMapper userResponseMapper;
 
     @Override
-    public SimpleResponseDTO registerUser(UserRequestDTO userRequestDTO) {
+    public SimpleResponseDTO registrationUser(UserRequestDTO userRequestDTO) {
         User user = userRequestMapper.userRequestDTOToUser(userRequestDTO);
 
         if(userRepository.existsByEmailOrUsername(user.getEmail(), user.getUsername())) {

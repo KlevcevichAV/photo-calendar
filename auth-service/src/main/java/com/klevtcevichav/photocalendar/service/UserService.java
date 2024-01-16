@@ -8,7 +8,7 @@ import com.klevtcevichav.photocalendar.dto.response.UserResponseDTO;
 
 public interface UserService {
 
-    SimpleResponseDTO registerUser(UserRequestDTO userRequestDTO);
+    SimpleResponseDTO registrationUser(UserRequestDTO userRequestDTO);
     UserResponseDTO updateUser(UserUpdateRequestDTO userUpdateRequestDTO);
     SimpleResponseDTO delete(Long id);
     UserResponseDTO getUserById(Long id);

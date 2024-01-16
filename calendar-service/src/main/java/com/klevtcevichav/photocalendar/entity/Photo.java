@@ -4,8 +4,9 @@ import com.klevtcevichav.photocalendar.core.entity.FullAbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
-import lombok.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -20,7 +21,7 @@ public class Photo extends FullAbstractEntity {
     @Column
     private Long accountId;
     @Column
-    private String nameFile;
+    private String fileName;
     @Column
     private UUID key;
     @Column
