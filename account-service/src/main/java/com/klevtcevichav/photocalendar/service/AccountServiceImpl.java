@@ -34,15 +34,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponseDTO updateAccount(AccountUpdateRequestDTO accountUpdateRequestDTO) {
-        Account oldAccount = accountRepository.findById(accountUpdateRequestDTO.getId())
+        Account account = accountRepository.findById(accountUpdateRequestDTO.getId())
                 .orElseThrow(() -> new AccountServiceException(String.format("Not found account with id: %d", accountUpdateRequestDTO.getId())));
-        //TODO find how to do this :)
 
-        Account newAccount = accountUpdateRequestMapper.accountUpdateRequestMapperToAccount(accountUpdateRequestDTO);
+        accountUpdateRequestMapper.updateAccountFromDTO(accountUpdateRequestDTO, account);
 
-        accountRepository.save(newAccount);
+        accountRepository.save(account);
 
-        return accountResponseMapper.accountToAccountResponseDTO(newAccount);
+        return accountResponseMapper.accountToAccountResponseDTO(account);
     }
 
     @Override
