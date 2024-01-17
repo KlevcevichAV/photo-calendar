@@ -19,24 +19,23 @@
     <modules>
         <module>core</module>
         <module>eureka-server</module>
-        <module>calendar-service</module>
         <module>auth-service</module>
         <module>account-service</module>
+        <module>calendar-service</module>
     </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-global-version>3.2.1</spring-global-version>
+        <spring.global.version>3.2.1</spring.global.version>
         <lombok.version>1.18.30</lombok.version>
         <jackson.version>2.12.5</jackson.version>
-        <modelmapper.version>3.2.0</modelmapper.version>
-        <spring-boot-starter.version>3.2.1</spring-boot-starter.version>
-        <spring-web.version>6.1.2</spring-web.version>
+        <spring.boot.starter.version>3.2.1</spring.boot.starter.version>
+        <spring.web.version>6.1.2</spring.web.version>
         <passay.version>1.6.4</passay.version>
         <postgresql.version>42.7.1</postgresql.version>
-        <spring.cloud-version>2020.0.3</spring.cloud-version>
+        <spring.cloud.version>2020.0.3</spring.cloud.version>
         <aws.s3.vercion>2.20.26</aws.s3.vercion>
         <mapstruct.vercion>1.5.5.Final</mapstruct.vercion>
     </properties>
@@ -69,62 +68,45 @@
             </dependency>
 
             <!-- SPRING dependencies -->
-            <!-- web -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring-global-version}</version>
+                <version>${spring.global.version}</version>
             </dependency>
-            <!-- JPA -->
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${spring-global-version}</version>
+                <version>${spring.global.version}</version>
             </dependency>
 
-            <!-- security dependencies -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
-                <version>${spring-global-version}</version>
+                <version>${spring.global.version}</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.security</groupId>-->
-<!--                <artifactId>spring-security-oauth2-client</artifactId>-->
-<!--                <version>5.4.1</version>-->
-<!--            </dependency>-->
-
-
-            <!-- mail -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-mail</artifactId>
-                <version>${spring-global-version}</version>
+                <version>${spring.global.version}</version>
             </dependency>
 
-            <!-- validation -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-validation</artifactId>
-                <version>${spring-global-version}</version>
-            </dependency>
-
-            <!-- Password Validation -->
-            <dependency>
-                <groupId>org.passay</groupId>
-                <artifactId>passay</artifactId>
-                <version>${passay-version}</version>
+                <version>${spring.global.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring.cloud-version}</version>
+                <version>${spring.cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
 
+            <!-- Lombok dependency -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -132,6 +114,7 @@
                 <scope>provided</scope>
             </dependency>
 
+            <!-- jackson -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
@@ -139,14 +122,7 @@
                 <scope>compile</scope>
             </dependency>
 
-            <!-- for quick mapping -->
-            <dependency>
-                <groupId>org.modelmapper</groupId>
-                <artifactId>modelmapper</artifactId>
-                <version>${modelmapper.version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+            <!-- PostgreSQL -->
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
@@ -183,7 +159,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <version>${spring-global-version}</version>
+            <version>${spring.global.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
