@@ -30,7 +30,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.global.version>3.2.1</spring.global.version>
         <lombok.version>1.18.30</lombok.version>
-        <jackson.version>2.12.5</jackson.version>
+        <jackson.version>2.15.0</jackson.version>
         <spring.boot.starter.version>3.2.1</spring.boot.starter.version>
         <spring.web.version>6.1.2</spring.web.version>
         <passay.version>1.6.4</passay.version>

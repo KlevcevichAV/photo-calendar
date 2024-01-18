@@ -1,4 +1,4 @@
-package com.klevtcevichav.photocalendar.core.eurekaserver;
+package com.klevtcevichav.photocalendar.eurekaserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

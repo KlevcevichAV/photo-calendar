@@ -1,4 +1,4 @@
-package com.klevtcevichav.photocalendar.core.eurekaserver;
+package com.klevtcevichav.photocalendar.eurekaserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
