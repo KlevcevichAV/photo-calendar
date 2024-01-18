@@ -17,7 +17,7 @@ import java.io.IOException;
 public class S3Service {
 
     private final S3Client s3Client;
-    @Value("aws.bucket-name")
+    @Value("${aws.bucket-name}")
     private final String bucketName;
 
     public void putObject(String key, byte[] file) {
