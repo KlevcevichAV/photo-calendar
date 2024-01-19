@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @Slf4j
 @AllArgsConstructor
 @RestController
@@ -66,5 +68,11 @@ public class UserControllerImpl implements UserController {
         SimpleResponseDTO simpleResponseDTO = userService.updatePassword(userUpdatePasswordDTO);
 
         return ResponseEntity.ok(simpleResponseDTO);
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        String result = userService.test();
+        return "test: " + (Objects.isNull(result) ? "Wrong!" : result);
     }
 }

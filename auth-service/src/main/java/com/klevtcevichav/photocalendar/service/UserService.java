@@ -15,4 +15,6 @@ public interface UserService {
 
     SimpleResponseDTO updatePassword(UserUpdatePasswordDTO userUpdatePasswordDTO);
 
+    String test();
+
 }

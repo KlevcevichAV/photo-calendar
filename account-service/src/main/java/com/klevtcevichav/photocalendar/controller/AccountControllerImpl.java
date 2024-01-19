@@ -7,6 +7,7 @@ import com.klevtcevichav.photocalendar.service.AccountService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/accounts")
+@Log
 public class AccountControllerImpl implements AccountController{
 
     private final AccountService accountService;
@@ -56,5 +58,11 @@ public class AccountControllerImpl implements AccountController{
         AccountResponseDTO accountResponseDTO = accountService.getAccountByUserId(userId);
 
         return ResponseEntity.ok(accountResponseDTO);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        log.info("SOSAT!");
+        return ResponseEntity.ok("success! Heiteri sosat!");
     }
 }

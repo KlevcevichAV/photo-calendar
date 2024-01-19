@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          account-service:
+            url: http://localhost:9090/api/v1/accounts
