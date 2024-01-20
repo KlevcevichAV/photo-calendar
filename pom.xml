@@ -22,20 +22,21 @@
         <module>auth-service</module>
         <module>account-service</module>
         <module>calendar-service</module>
+        <module>account-client</module>
+        <module>auth-client</module>
+        <module>calendar-client</module>
     </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.global.version>3.2.1</spring.global.version>
+        <spring.boot.version>3.2.0</spring.boot.version>
+        <spring.cloud.version>2023.0.0</spring.cloud.version>
         <lombok.version>1.18.30</lombok.version>
-        <jackson.version>2.12.5</jackson.version>
-        <spring.boot.starter.version>3.2.1</spring.boot.starter.version>
-        <spring.web.version>6.1.2</spring.web.version>
+        <jackson.version>2.15.0</jackson.version>
         <passay.version>1.6.4</passay.version>
         <postgresql.version>42.7.1</postgresql.version>
-        <spring.cloud.version>2020.0.3</spring.cloud.version>
         <aws.s3.vercion>2.20.26</aws.s3.vercion>
         <mapstruct.vercion>1.5.5.Final</mapstruct.vercion>
     </properties>
@@ -45,7 +46,13 @@
             <!-- local dependencies -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>calendar-service</artifactId>
+                <artifactId>core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.klevtcevichav.photocalendar</groupId>
+                <artifactId>auth-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -56,46 +63,37 @@
             </dependency>
 
             <dependency>
+                <groupId>com.klevtcevichav.photocalendar</groupId>
+                <artifactId>account-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>account-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
+                <groupId>com.klevtcevichav.photocalendar</groupId>
+                <artifactId>calendar-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>core</artifactId>
+                <artifactId>calendar-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <!-- SPRING dependencies -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring.global.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${spring.global.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-security</artifactId>
-                <version>${spring.global.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-mail</artifactId>
-                <version>${spring.global.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-validation</artifactId>
-                <version>${spring.global.version}</version>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
 
             <dependency>
@@ -159,7 +157,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <version>${spring.global.version}</version>
+            <version>${spring.boot.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>

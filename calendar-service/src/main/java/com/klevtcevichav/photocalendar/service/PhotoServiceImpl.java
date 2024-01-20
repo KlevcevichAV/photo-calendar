@@ -1,10 +1,10 @@
 package com.klevtcevichav.photocalendar.service;
 
+import com.klevtcevichav.photocalendar.calendar.dto.request.AddPhotoRequestDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.response.PhotoResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
 import com.klevtcevichav.photocalendar.dto.mapper.AddPhotoRequestMapper;
 import com.klevtcevichav.photocalendar.dto.mapper.PhotoResponseMapper;
-import com.klevtcevichav.photocalendar.dto.request.AddPhotoRequestDTO;
-import com.klevtcevichav.photocalendar.dto.response.PhotoResponseDTO;
 import com.klevtcevichav.photocalendar.entity.Photo;
 import com.klevtcevichav.photocalendar.repository.PhotoRepository;
 import com.klevtcevichav.photocalendar.s3.S3Service;

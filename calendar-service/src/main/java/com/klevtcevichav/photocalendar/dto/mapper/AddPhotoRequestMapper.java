@@ -1,6 +1,6 @@
 package com.klevtcevichav.photocalendar.dto.mapper;
 
-import com.klevtcevichav.photocalendar.dto.request.AddPhotoRequestDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.request.AddPhotoRequestDTO;
 import com.klevtcevichav.photocalendar.entity.Photo;
 import org.mapstruct.Mapper;
 

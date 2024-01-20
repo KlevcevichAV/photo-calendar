@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          calendar:
+            url: http://localhost:9090/api/v1/calendar
+          photo:
+            url: http://localhost:9090/api/v1/photos

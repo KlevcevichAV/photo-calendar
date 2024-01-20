@@ -1,10 +1,10 @@
 package com.klevtcevichav.photocalendar.controller;
 
-import com.klevtcevichav.photocalendar.dto.request.CalendarRequestDTO;
-import com.klevtcevichav.photocalendar.dto.request.DayRequestDTO;
-import com.klevtcevichav.photocalendar.dto.request.MonthRequestDTO;
-import com.klevtcevichav.photocalendar.dto.response.CalendarResponseDTO;
-import com.klevtcevichav.photocalendar.dto.response.DayResponseDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.request.CalendarRequestDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.request.DayRequestDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.request.MonthRequestDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.response.CalendarResponseDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.response.DayResponseDTO;
 import org.springframework.http.ResponseEntity;
 
 public interface CalendarController {

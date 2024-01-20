@@ -1,11 +1,11 @@
 package com.klevtcevichav.photocalendar.service;
 
-import com.klevtcevichav.photocalendar.dto.request.CalendarRequestDTO;
-import com.klevtcevichav.photocalendar.dto.request.DayRequestDTO;
-import com.klevtcevichav.photocalendar.dto.request.MonthRequestDTO;
-import com.klevtcevichav.photocalendar.dto.response.CalendarResponseDTO;
-import com.klevtcevichav.photocalendar.dto.response.DayResponseDTO;
-import com.klevtcevichav.photocalendar.dto.response.PhotoResponseDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.request.CalendarRequestDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.request.DayRequestDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.request.MonthRequestDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.response.CalendarResponseDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.response.DayResponseDTO;
+import com.klevtcevichav.photocalendar.calendar.dto.response.PhotoResponseDTO;
 import com.klevtcevichav.photocalendar.entity.Photo;
 import com.klevtcevichav.photocalendar.repository.PhotoRepository;
 import com.klevtcevichav.photocalendar.s3.S3Service;
@@ -93,7 +93,7 @@ public class CalendarServiceImpl implements CalendarService{
         for (LocalDate dayIterator = startDate; dayIterator.isBefore(finishDate); dayIterator = dayIterator.plusDays(1)) {
 
             LocalDate finalDayIterator = dayIterator;
-            List<Photo> photoListForDayIterator = photos.stream().filter(photo -> photo.getDateOfCreation().equals(finalDayIterator)).collect(Collectors.toList());
+            List<Photo> photoListForDayIterator = photos.stream().filter(photo -> photo.getDateOfCreationPhoto().equals(finalDayIterator)).collect(Collectors.toList());
             response.add(DayResponseDTO
                     .builder()
                     .date(finalDayIterator)
@@ -109,7 +109,7 @@ public class CalendarServiceImpl implements CalendarService{
             photoResponseDTOS.add(PhotoResponseDTO
                     .builder()
                     .location(photo.getLocation())
-                    .dateOfCreation(photo.getDateOfCreation())
+                    .dateOfCreationPhoto(photo.getDateOfCreationPhoto())
                     .accountId(photo.getAccountId())
                     .fileName(photo.getFileName())
                     .photo((photoResponseDTOS.size() == 0 || isGetDay) ? s3Service.getObject(photo.getKey().toString()) : null)

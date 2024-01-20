@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          auth:
+            url: http://localhost:9091/api/v1/users

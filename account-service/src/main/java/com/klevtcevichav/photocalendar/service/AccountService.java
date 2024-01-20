@@ -1,8 +1,8 @@
 package com.klevtcevichav.photocalendar.service;
 
+import com.klevtcevichav.photocalendar.account.dto.request.AccountUpdateRequestDTO;
+import com.klevtcevichav.photocalendar.account.dto.response.AccountResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
-import com.klevtcevichav.photocalendar.dto.request.AccountUpdateRequestDTO;
-import com.klevtcevichav.photocalendar.dto.response.AccountResponseDTO;
 
 public interface AccountService {
 

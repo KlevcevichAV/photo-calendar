@@ -25,7 +25,7 @@ public class Photo extends FullAbstractEntity {
     @Column
     private UUID key;
     @Column
-    private LocalDate dateOfCreation;
+    private LocalDate dateOfCreationPhoto;
 //    if photo hasn't location then location is null, it's not important
     @Column
     private String location;
