@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "account-service")
+@FeignClient(name = "account")
 public interface AccountClientApi {
 
     @PostMapping("/{userId}")
@@ -31,6 +31,4 @@ public interface AccountClientApi {
     @GetMapping("/user/{userId}")
     ResponseEntity<AccountResponseDTO> getAccountByUserId(@PathVariable(name = "userId") @Positive Long userId);
 
-    @GetMapping("/test")
-    ResponseEntity<String> test();
 }

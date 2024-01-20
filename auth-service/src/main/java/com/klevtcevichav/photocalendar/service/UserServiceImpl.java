@@ -2,14 +2,14 @@ package com.klevtcevichav.photocalendar.service;
 
 import com.klevtcevichav.photocalendar.account.client.AccountClientApi;
 import com.klevtcevichav.photocalendar.account.dto.response.AccountResponseDTO;
+import com.klevtcevichav.photocalendar.auth.dto.request.UserRequestDTO;
+import com.klevtcevichav.photocalendar.auth.dto.request.UserUpdatePasswordDTO;
+import com.klevtcevichav.photocalendar.auth.dto.request.UserUpdateRequestDTO;
+import com.klevtcevichav.photocalendar.auth.dto.response.UserResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
 import com.klevtcevichav.photocalendar.dto.mapper.UserRequestMapper;
 import com.klevtcevichav.photocalendar.dto.mapper.UserResponseMapper;
 import com.klevtcevichav.photocalendar.dto.mapper.UserUpdateRequestMapper;
-import com.klevtcevichav.photocalendar.dto.request.UserRequestDTO;
-import com.klevtcevichav.photocalendar.dto.request.UserUpdatePasswordDTO;
-import com.klevtcevichav.photocalendar.dto.request.UserUpdateRequestDTO;
-import com.klevtcevichav.photocalendar.dto.response.UserResponseDTO;
 import com.klevtcevichav.photocalendar.entity.User;
 import com.klevtcevichav.photocalendar.exception.UserException;
 import com.klevtcevichav.photocalendar.repository.UserRepository;
@@ -102,9 +102,4 @@ public class UserServiceImpl implements UserService {
         return new SimpleResponseDTO();
     }
 
-    @Override
-    public String test() {
-        ResponseEntity<String> result = accountClientApi.test();
-        return result.getBody();
-    }
 }

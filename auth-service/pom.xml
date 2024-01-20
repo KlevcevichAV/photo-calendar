@@ -27,6 +27,11 @@
 
         <dependency>
             <groupId>com.klevtcevichav.photocalendar</groupId>
+            <artifactId>auth-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.klevtcevichav.photocalendar</groupId>
             <artifactId>account-client</artifactId>
         </dependency>
 

@@ -1,10 +1,10 @@
 package com.klevtcevichav.photocalendar.controller;
 
+import com.klevtcevichav.photocalendar.auth.dto.request.UserRequestDTO;
+import com.klevtcevichav.photocalendar.auth.dto.request.UserUpdatePasswordDTO;
+import com.klevtcevichav.photocalendar.auth.dto.request.UserUpdateRequestDTO;
+import com.klevtcevichav.photocalendar.auth.dto.response.UserResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
-import com.klevtcevichav.photocalendar.dto.request.UserRequestDTO;
-import com.klevtcevichav.photocalendar.dto.request.UserUpdatePasswordDTO;
-import com.klevtcevichav.photocalendar.dto.request.UserUpdateRequestDTO;
-import com.klevtcevichav.photocalendar.dto.response.UserResponseDTO;
 import com.klevtcevichav.photocalendar.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -13,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
 
 @Slf4j
 @AllArgsConstructor
@@ -70,9 +68,4 @@ public class UserControllerImpl implements UserController {
         return ResponseEntity.ok(simpleResponseDTO);
     }
 
-    @GetMapping("/test")
-    public String test() {
-        String result = userService.test();
-        return "test: " + (Objects.isNull(result) ? "Wrong!" : result);
-    }
 }

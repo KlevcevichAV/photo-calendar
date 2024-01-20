@@ -1,6 +1,6 @@
 package com.klevtcevichav.photocalendar.dto.mapper;
 
-import com.klevtcevichav.photocalendar.dto.response.UserResponseDTO;
+import com.klevtcevichav.photocalendar.auth.dto.response.UserResponseDTO;
 import com.klevtcevichav.photocalendar.entity.User;
 import org.mapstruct.Mapper;
 

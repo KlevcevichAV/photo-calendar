@@ -1,10 +1,10 @@
 package com.klevtcevichav.photocalendar.service;
 
+import com.klevtcevichav.photocalendar.account.dto.request.AccountUpdateRequestDTO;
+import com.klevtcevichav.photocalendar.account.dto.response.AccountResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
 import com.klevtcevichav.photocalendar.dto.mapper.AccountResponseMapper;
 import com.klevtcevichav.photocalendar.dto.mapper.AccountUpdateRequestMapper;
-import com.klevtcevichav.photocalendar.dto.request.AccountUpdateRequestDTO;
-import com.klevtcevichav.photocalendar.dto.response.AccountResponseDTO;
 import com.klevtcevichav.photocalendar.enitty.Account;
 import com.klevtcevichav.photocalendar.exception.AccountServiceException;
 import com.klevtcevichav.photocalendar.repository.AccountRepository;

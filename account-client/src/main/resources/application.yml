@@ -3,5 +3,5 @@ spring:
     openfeign:
       client:
         config:
-          account-service:
+          account:
             url: http://localhost:9090/api/v1/accounts

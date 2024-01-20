@@ -1,8 +1,8 @@
 package com.klevtcevichav.photocalendar.controller;
 
+import com.klevtcevichav.photocalendar.account.dto.request.AccountUpdateRequestDTO;
+import com.klevtcevichav.photocalendar.account.dto.response.AccountResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
-import com.klevtcevichav.photocalendar.dto.request.AccountUpdateRequestDTO;
-import com.klevtcevichav.photocalendar.dto.response.AccountResponseDTO;
 import com.klevtcevichav.photocalendar.service.AccountService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -60,9 +60,4 @@ public class AccountControllerImpl implements AccountController{
         return ResponseEntity.ok(accountResponseDTO);
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        log.info("SOSAT!");
-        return ResponseEntity.ok("success! Heiteri sosat!");
-    }
 }

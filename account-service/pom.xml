@@ -25,6 +25,11 @@
             <artifactId>core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.klevtcevichav.photocalendar</groupId>
+            <artifactId>account-client</artifactId>
+        </dependency>
+
         <!-- SPRING dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
