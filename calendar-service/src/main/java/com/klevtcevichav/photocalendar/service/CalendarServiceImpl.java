@@ -10,6 +10,7 @@ import com.klevtcevichav.photocalendar.entity.Photo;
 import com.klevtcevichav.photocalendar.repository.PhotoRepository;
 import com.klevtcevichav.photocalendar.s3.S3Service;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class CalendarServiceImpl implements CalendarService{
@@ -28,6 +30,8 @@ public class CalendarServiceImpl implements CalendarService{
 
     @Override
     public CalendarResponseDTO getCalendar(CalendarRequestDTO calendarRequestDTO) {
+
+        log.info("Start finding calendar with account id: {} and year:{}", calendarRequestDTO.getAccountId(), calendarRequestDTO.getYear());
 //        check existAccountById(id).orElseThrow(() -> new AccountException("Not found account with id: %s".format(req.getId()))
         Long accountId = calendarRequestDTO.getAccountId();
 
@@ -38,6 +42,7 @@ public class CalendarServiceImpl implements CalendarService{
                 startDate,
                 finishDate);
 
+        log.info("Calendar found and start building response for calendar: {}", photos);
         return CalendarResponseDTO
                 .builder()
                 .year(calendarRequestDTO.getYear())
@@ -47,6 +52,9 @@ public class CalendarServiceImpl implements CalendarService{
 
     @Override
     public CalendarResponseDTO getMonth(MonthRequestDTO monthRequestDTO) {
+
+        log.info("Start finding calendar(month) with account id: {}, year:{}, month: {}",
+                monthRequestDTO.getAccountId(), monthRequestDTO.getYear(), monthRequestDTO.getMonth());
 //        check existAccountById(id).orElseThrow(() -> new AccountException("Not found account with id: %s".format(req.getId()))
         Long accountId = monthRequestDTO.getAccountId();
 
@@ -61,6 +69,7 @@ public class CalendarServiceImpl implements CalendarService{
                 startDate,
                 finishDate);
 
+        log.info("Calendar found and start building response for calendar: {}", photos);
         return CalendarResponseDTO
                 .builder()
                 .year(monthRequestDTO.getYear())
@@ -71,6 +80,9 @@ public class CalendarServiceImpl implements CalendarService{
 
     @Override
     public DayResponseDTO getDay(DayRequestDTO dayRequestDTO) {
+
+        log.info("Start finding photos for date:{}  with account id: {}",
+                dayRequestDTO.getAccountId(), dayRequestDTO.getDay());
 //        check existAccountById(id).orElseThrow(() -> new AccountException("Not found account with id: %s".format(req.getId()))
         Long accountId = dayRequestDTO.getAccountId();
 
@@ -79,6 +91,7 @@ public class CalendarServiceImpl implements CalendarService{
                 dayRequestDTO.getDay(),
                 dayRequestDTO.getDay());
 
+        log.info("Photos for date found and start building response: {}", photos);
         return DayResponseDTO
                 .builder()
                 .date(dayRequestDTO.getDay())
@@ -88,6 +101,7 @@ public class CalendarServiceImpl implements CalendarService{
 
     private List<DayResponseDTO> buildDaysResponseList(LocalDate startDate, LocalDate finishDate, List<Photo> photos) {
 
+        log.info("Start building list day response for photos: {}", photos);
         List<DayResponseDTO> response = new ArrayList<>();
 
         for (LocalDate dayIterator = startDate; dayIterator.isBefore(finishDate); dayIterator = dayIterator.plusDays(1)) {
@@ -100,11 +114,20 @@ public class CalendarServiceImpl implements CalendarService{
                     .photos(buildPhotoResponseList(photoListForDayIterator, false))
                     .build());
         }
+        log.info("List DayResponse built: {}", response);
         return response;
     }
 
     private List<PhotoResponseDTO> buildPhotoResponseList(List<Photo> photos, boolean isGetDay) {
+
         List<PhotoResponseDTO> photoResponseDTOS = new ArrayList<>();
+
+        if(photos.isEmpty()) {
+            log.info("List photo is empty!");
+            return photoResponseDTOS;
+        }
+
+        log.info("Start building list photo for day: {}", photos.get(0).getDateOfCreationPhoto());
         for (Photo photo : photos) {
             photoResponseDTOS.add(PhotoResponseDTO
                     .builder()
@@ -115,6 +138,7 @@ public class CalendarServiceImpl implements CalendarService{
                     .photo((photoResponseDTOS.size() == 0 || isGetDay) ? s3Service.getObject(photo.getKey().toString()) : null)
                     .build());
         }
+        log.info("List list photo for day: {} built: {}", photos.get(0).getDateOfCreationPhoto(), photoResponseDTOS);
         return photoResponseDTOS;
     }
 
