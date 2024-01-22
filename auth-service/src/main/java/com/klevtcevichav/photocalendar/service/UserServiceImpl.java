@@ -7,11 +7,12 @@ import com.klevtcevichav.photocalendar.auth.dto.request.UserUpdatePasswordDTO;
 import com.klevtcevichav.photocalendar.auth.dto.request.UserUpdateRequestDTO;
 import com.klevtcevichav.photocalendar.auth.dto.response.UserResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
+import com.klevtcevichav.photocalendar.core.exception.NotFoundException;
 import com.klevtcevichav.photocalendar.dto.mapper.UserRequestMapper;
 import com.klevtcevichav.photocalendar.dto.mapper.UserResponseMapper;
 import com.klevtcevichav.photocalendar.dto.mapper.UserUpdateRequestMapper;
 import com.klevtcevichav.photocalendar.entity.User;
-import com.klevtcevichav.photocalendar.exception.UserException;
+import com.klevtcevichav.photocalendar.exception.UserBusinessException;
 import com.klevtcevichav.photocalendar.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
         User user = userRequestMapper.userRequestDTOToUser(userRequestDTO);
 
         if(userRepository.existsByEmailOrUsername(user.getEmail(), user.getUsername())) {
-            throw new UserException("This email or username is exist!");
+            throw new UserBusinessException("This email or username is exist!");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
                 || Objects.isNull(response.getBody())
                 || Objects.isNull(response.getBody().getId())) {
 
-            throw new UserException("Account was not created!");
+            throw new UserBusinessException("Account was not created!");
         }
 
         savedUser.setAccountId(response.getBody().getId());
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO updateUser(UserUpdateRequestDTO userUpdateRequestDTO) {
 
         log.info("Start updating user with id: {}", userUpdateRequestDTO.getId());
-        User user = userRepository.findById(userUpdateRequestDTO.getId()).orElseThrow(() -> new UserException("Not found"));
+        User user = userRepository.findById(userUpdateRequestDTO.getId()).orElseThrow(() -> new NotFoundException("Not found"));
 
         userUpdateRequestMapper.updateUserFromDTO(userUpdateRequestDTO, user);
 
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService {
     public SimpleResponseDTO delete(Long id) {
 
         log.info("Start deleting user with id:{}", id);
-        User user = userRepository.findById(id).orElseThrow(() -> new UserException("Not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found"));
 
         user.setDateOfDelete(LocalDateTime.now());
 
@@ -97,7 +98,7 @@ public class UserServiceImpl implements UserService {
 
         log.info("Start finding user with id: {}", id);
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserException("User not found with id : " + id)
+                .orElseThrow(() -> new NotFoundException("User not found with id : " + id)
         );
 
         log.info("User with id:{} found:{}", id, user);
@@ -109,15 +110,15 @@ public class UserServiceImpl implements UserService {
 
         log.info("Start updating password for user with id: {}", userUpdatePasswordDTO.getId());
         User user = userRepository.findById(userUpdatePasswordDTO.getId())
-                .orElseThrow(() -> new UserException("User not found with id : %d".formatted(userUpdatePasswordDTO.getId()))
+                .orElseThrow(() -> new NotFoundException("User not found with id : %d".formatted(userUpdatePasswordDTO.getId()))
                 );
 
         if (!userUpdatePasswordDTO.getPassword().equals(userUpdatePasswordDTO.getConfirmPassword())) {
-            throw new RuntimeException("Password and confirm password are not equals!");
+            throw new UserBusinessException("Password and confirm password are not equals!");
         }
 
         if (user.getPassword().equals(userUpdatePasswordDTO.getPassword())) {
-            throw new RuntimeException("Old password and new password is equals!");
+            throw new UserBusinessException("Old password and new password is equals!");
         }
 
         user.setPassword(passwordEncoder.encode(userUpdatePasswordDTO.getPassword()));

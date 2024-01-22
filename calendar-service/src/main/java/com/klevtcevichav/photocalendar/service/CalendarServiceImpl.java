@@ -32,7 +32,8 @@ public class CalendarServiceImpl implements CalendarService{
     public CalendarResponseDTO getCalendar(CalendarRequestDTO calendarRequestDTO) {
 
         log.info("Start finding calendar with account id: {} and year:{}", calendarRequestDTO.getAccountId(), calendarRequestDTO.getYear());
-//        check existAccountById(id).orElseThrow(() -> new AccountException("Not found account with id: %s".format(req.getId()))
+//        TODO
+//        check existAccountById(id).orElseThrow(() -> new NotFoundException("Not found account with id: %s".format(req.getId()))
         Long accountId = calendarRequestDTO.getAccountId();
 
         LocalDate startDate = LocalDate.of(Math.toIntExact(calendarRequestDTO.getYear()), Month.JANUARY, 1);
@@ -55,7 +56,7 @@ public class CalendarServiceImpl implements CalendarService{
 
         log.info("Start finding calendar(month) with account id: {}, year:{}, month: {}",
                 monthRequestDTO.getAccountId(), monthRequestDTO.getYear(), monthRequestDTO.getMonth());
-//        check existAccountById(id).orElseThrow(() -> new AccountException("Not found account with id: %s".format(req.getId()))
+//        check existAccountById(id).orElseThrow(() -> new NotFoundException("Not found account with id: %s".format(req.getId()))
         Long accountId = monthRequestDTO.getAccountId();
 
 
@@ -83,7 +84,7 @@ public class CalendarServiceImpl implements CalendarService{
 
         log.info("Start finding photos for date:{}  with account id: {}",
                 dayRequestDTO.getAccountId(), dayRequestDTO.getDay());
-//        check existAccountById(id).orElseThrow(() -> new AccountException("Not found account with id: %s".format(req.getId()))
+//        check existAccountById(id).orElseThrow(() -> new NotFoundException("Not found account with id: %s".format(req.getId()))
         Long accountId = dayRequestDTO.getAccountId();
 
         List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationGreaterThanEqualAndDateOfCreationLessThan(
