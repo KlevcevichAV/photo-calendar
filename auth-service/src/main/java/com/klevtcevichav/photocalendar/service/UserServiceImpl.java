@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -37,6 +38,7 @@ public class UserServiceImpl implements UserService {
     private final AccountClientApi accountClientApi;
 
     @Override
+    @Transactional
     public SimpleResponseDTO registrationUser(UserRequestDTO userRequestDTO) {
 
         log.info("Start registration user: {}", userRequestDTO);
@@ -66,6 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponseDTO updateUser(UserUpdateRequestDTO userUpdateRequestDTO) {
 
         log.info("Start updating user with id: {}", userUpdateRequestDTO.getId());
@@ -80,6 +83,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public SimpleResponseDTO delete(Long id) {
 
         log.info("Start deleting user with id:{}", id);
@@ -106,6 +110,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public SimpleResponseDTO updatePassword(UserUpdatePasswordDTO userUpdatePasswordDTO) {
 
         log.info("Start updating password for user with id: {}", userUpdatePasswordDTO.getId());

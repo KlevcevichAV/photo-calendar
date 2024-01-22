@@ -12,6 +12,7 @@ import com.klevtcevichav.photocalendar.s3.S3Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -27,6 +28,7 @@ public class PhotoServiceImpl implements PhotoService{
     private final PhotoResponseMapper photoResponseMapper;
 
     @Override
+    @Transactional
     public SimpleResponseDTO addPhoto(AddPhotoRequestDTO addPhotoRequestDTO) {
 
         log.info("Start adding photo to account with id:{}. Photo:{}", addPhotoRequestDTO.getAccountId(), addPhotoRequestDTO);
@@ -42,6 +44,7 @@ public class PhotoServiceImpl implements PhotoService{
     }
 
     @Override
+    @Transactional
     public SimpleResponseDTO removePhoto(Long id) {
 
         log.info("Start deleting photo with id: {}", id);
