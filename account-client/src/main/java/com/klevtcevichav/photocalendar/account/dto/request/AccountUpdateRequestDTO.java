@@ -21,6 +21,5 @@ public class AccountUpdateRequestDTO extends AbstractRequestDTO {
     @NotEmpty
     private String fullName;
     @NotNull
-    //TODO add annotation for check date
     private LocalDate birthDate;
 }
