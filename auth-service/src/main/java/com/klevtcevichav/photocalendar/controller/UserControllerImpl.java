@@ -49,7 +49,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable("id") @Positive  Long id) {
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable("id") Long id) {
 
         UserResponseDTO userResponseDTO = userService.getUserById(id);
 

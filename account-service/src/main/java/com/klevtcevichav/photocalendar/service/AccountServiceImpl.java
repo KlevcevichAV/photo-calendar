@@ -3,10 +3,11 @@ package com.klevtcevichav.photocalendar.service;
 import com.klevtcevichav.photocalendar.account.dto.request.AccountUpdateRequestDTO;
 import com.klevtcevichav.photocalendar.account.dto.response.AccountResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
+import com.klevtcevichav.photocalendar.core.exception.NotFoundException;
 import com.klevtcevichav.photocalendar.dto.mapper.AccountResponseMapper;
 import com.klevtcevichav.photocalendar.dto.mapper.AccountUpdateRequestMapper;
 import com.klevtcevichav.photocalendar.enitty.Account;
-import com.klevtcevichav.photocalendar.exception.AccountServiceException;
+import com.klevtcevichav.photocalendar.exception.AccountBusinessException;
 import com.klevtcevichav.photocalendar.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
         log.info("Start creating account with user id: {}", userId);
 
         if (accountRepository.existsAccountByUserId(userId)) {
-            throw new AccountServiceException(String.format("Account with user id=%d exist!", userId));
+            throw new AccountBusinessException(String.format("Account with user id=%d exist!", userId));
         }
         Account account = Account.builder().userId(userId).build();
 
@@ -42,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
         log.info("Start updating account info: {}", accountUpdateRequestDTO);
 
         Account account = accountRepository.findById(accountUpdateRequestDTO.getId())
-                .orElseThrow(() -> new AccountServiceException(String.format("Not found account with id: %d", accountUpdateRequestDTO.getId())));
+                .orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", accountUpdateRequestDTO.getId())));
 
         accountUpdateRequestMapper.updateAccountFromDTO(accountUpdateRequestDTO, account);
 
@@ -56,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
     public SimpleResponseDTO deleteAccount(Long id) {
         log.info("Start deleting account with id: {}", id);
 
-        Account account = accountRepository.findById(id).orElseThrow(() -> new AccountServiceException(String.format("Not found account with id: %d", id)));
+        Account account = accountRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", id)));
 
         account.setDateOfDelete(LocalDateTime.now());
 
@@ -69,7 +70,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponseDTO getAccount(Long id) {
         log.info("Start finding account with id: {}", id);
-        Account account = accountRepository.findById(id).orElseThrow(() -> new AccountServiceException(String.format("Not found account with id: %d", id)));
+        Account account = accountRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", id)));
 
         log.info("Account with id={} found: {} ", id, account);
         return accountResponseMapper.accountToAccountResponseDTO(account);
@@ -79,7 +80,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountResponseDTO getAccountByUserId(Long userId) {
         log.info("Start finding account with user id: {}", userId);
 
-        Account account = accountRepository.findAccountByUserId(userId).orElseThrow(() -> new AccountServiceException(String.format("Not found account with id: %d", userId)));
+        Account account = accountRepository.findAccountByUserId(userId).orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", userId)));
 
         log.info("Account with user id={} found: {}", userId, account);
         return accountResponseMapper.accountToAccountResponseDTO(account);

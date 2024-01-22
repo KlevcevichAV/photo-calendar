@@ -3,6 +3,7 @@ package com.klevtcevichav.photocalendar.service;
 import com.klevtcevichav.photocalendar.calendar.dto.request.AddPhotoRequestDTO;
 import com.klevtcevichav.photocalendar.calendar.dto.response.PhotoResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
+import com.klevtcevichav.photocalendar.core.exception.NotFoundException;
 import com.klevtcevichav.photocalendar.dto.mapper.AddPhotoRequestMapper;
 import com.klevtcevichav.photocalendar.dto.mapper.PhotoResponseMapper;
 import com.klevtcevichav.photocalendar.entity.Photo;
@@ -44,7 +45,7 @@ public class PhotoServiceImpl implements PhotoService{
     public SimpleResponseDTO removePhoto(Long id) {
 
         log.info("Start deleting photo with id: {}", id);
-        Photo photo = photoRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        Photo photo = photoRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found photo by id: " + id));
 
         photo.setDateOfDelete(LocalDateTime.now());
 
@@ -58,7 +59,7 @@ public class PhotoServiceImpl implements PhotoService{
     public PhotoResponseDTO getPhoto(Long id) {
 
         log.info("Start finding photo with id: {}", id);
-        Photo photo = photoRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        Photo photo = photoRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found photo by id: " + id));
 
         PhotoResponseDTO photoResponseDTO = photoResponseMapper.photoToPhotoResponseDTO(photo);
         log.info("Call S3 service for getting photo from S3 with key: {}", photo.getKey());
