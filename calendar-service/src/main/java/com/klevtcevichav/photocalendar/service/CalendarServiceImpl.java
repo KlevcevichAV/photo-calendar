@@ -32,7 +32,6 @@ public class CalendarServiceImpl implements CalendarService{
     public CalendarResponseDTO getCalendar(CalendarRequestDTO calendarRequestDTO) {
 
         log.info("Start finding calendar with account id: {} and year:{}", calendarRequestDTO.getAccountId(), calendarRequestDTO.getYear());
-//        TODO
 //        check existAccountById(id).orElseThrow(() -> new NotFoundException("Not found account with id: %s".format(req.getId()))
         Long accountId = calendarRequestDTO.getAccountId();
 

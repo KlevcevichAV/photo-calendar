@@ -1,15 +1,16 @@
 package com.klevtcevichav.photocalendar.s3;
 
+import com.klevtcevichav.photocalendar.core.exception.NotFoundException;
+import com.klevtcevichav.photocalendar.exception.CalendarBusinessException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetObjectResponse;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.IOException;
 
@@ -30,7 +31,11 @@ public class S3Service {
                 .bucket(bucketName)
                 .key(key)
                 .build();
-        s3Client.putObject(objectRequest, RequestBody.fromBytes(file));
+        try {
+            s3Client.putObject(objectRequest, RequestBody.fromBytes(file));
+        } catch (AwsServiceException e) {
+            throw new CalendarBusinessException("Can not upload file. Try later");
+        }
 
         log.info("File loaded with key:{}!", key);
     }
@@ -43,15 +48,16 @@ public class S3Service {
                 .bucket(bucketName)
                 .key(key)
                 .build();
-        ResponseInputStream<GetObjectResponse> response = s3Client.getObject(getObjectRequest);
 
         try {
+            ResponseInputStream<GetObjectResponse> response = s3Client.getObject(getObjectRequest);
             byte[] responseFile = response.readAllBytes();
             log.info("File with key:{} found", key);
             return responseFile;
-        } catch (IOException e) {
-            // TODO add exception
-            throw new RuntimeException("Can not getting file");
+        } catch (NoSuchKeyException e) {
+            throw new NotFoundException("Can not getting file from bucket!");
+        } catch (IOException | AwsServiceException e) {
+            throw new CalendarBusinessException("Can not getting file");
         }
     }
 }
