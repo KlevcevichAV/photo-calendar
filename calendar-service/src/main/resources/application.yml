@@ -18,5 +18,7 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 aws:
+  s3:
+    buckets:
+      photo: photo-calendar
   region: eu-west-1
-  bucket-name: test

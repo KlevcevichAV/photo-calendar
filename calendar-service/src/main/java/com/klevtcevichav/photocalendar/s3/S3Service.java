@@ -4,14 +4,16 @@ import com.klevtcevichav.photocalendar.core.exception.NotFoundException;
 import com.klevtcevichav.photocalendar.exception.CalendarBusinessException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.*;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 
@@ -21,8 +23,7 @@ import java.io.IOException;
 public class S3Service {
 
     private final S3Client s3Client;
-    @Value("${aws.bucket-name}")
-    private final String bucketName;
+    private final S3Buckets s3Buckets;
 
     @Transactional
     public void putObject(String key, byte[] file) {
@@ -30,7 +31,7 @@ public class S3Service {
         log.info("Start load file to S3 with key: {}", key);
         PutObjectRequest objectRequest = PutObjectRequest
                 .builder()
-                .bucket(bucketName)
+                .bucket(s3Buckets.getPhoto())
                 .key(key)
                 .build();
         try {
@@ -47,7 +48,7 @@ public class S3Service {
         log.info("Start getting file from S3 with key: {}", key);
         GetObjectRequest getObjectRequest = GetObjectRequest
                 .builder()
-                .bucket(bucketName)
+                .bucket(s3Buckets.getPhoto())
                 .key(key)
                 .build();
 
