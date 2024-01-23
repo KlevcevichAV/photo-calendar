@@ -28,6 +28,6 @@ interface UserClientApi {
     ResponseEntity<UserResponseDTO> getUserById(@PathVariable("id") @Positive  Long id);
 
     
-    @PatchMapping("/{id}/changePassword")
+    @PatchMapping("/{id}/change-password")
     ResponseEntity<SimpleResponseDTO> updatePassword(@RequestBody @ Valid UserUpdatePasswordDTO userUpdatePasswordDTO);
 }

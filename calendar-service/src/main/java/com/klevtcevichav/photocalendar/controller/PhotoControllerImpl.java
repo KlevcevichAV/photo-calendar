@@ -1,5 +1,6 @@
 package com.klevtcevichav.photocalendar.controller;
 
+import com.klevtcevichav.photocalendar.calendar.client.PhotoClientApi;
 import com.klevtcevichav.photocalendar.calendar.dto.request.AddPhotoRequestDTO;
 import com.klevtcevichav.photocalendar.calendar.dto.response.PhotoResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/calendar/photos")
-public class PhotoControllerImpl implements PhotoController{
+public class PhotoControllerImpl implements PhotoClientApi {
 
     private final PhotoService photoService;
 

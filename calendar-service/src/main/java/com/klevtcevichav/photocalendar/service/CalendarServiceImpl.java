@@ -1,12 +1,10 @@
 package com.klevtcevichav.photocalendar.service;
 
-import com.klevtcevichav.photocalendar.calendar.dto.request.CalendarRequestDTO;
-import com.klevtcevichav.photocalendar.calendar.dto.request.DayRequestDTO;
-import com.klevtcevichav.photocalendar.calendar.dto.request.MonthRequestDTO;
 import com.klevtcevichav.photocalendar.calendar.dto.response.CalendarResponseDTO;
 import com.klevtcevichav.photocalendar.calendar.dto.response.DayResponseDTO;
 import com.klevtcevichav.photocalendar.calendar.dto.response.PhotoResponseDTO;
 import com.klevtcevichav.photocalendar.entity.Photo;
+import com.klevtcevichav.photocalendar.exception.CalendarBusinessException;
 import com.klevtcevichav.photocalendar.repository.PhotoRepository;
 import com.klevtcevichav.photocalendar.s3.S3Service;
 import lombok.AllArgsConstructor;
@@ -14,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,72 +25,44 @@ public class CalendarServiceImpl implements CalendarService{
     private final PhotoRepository photoRepository;
 
     @Override
-    public CalendarResponseDTO getCalendar(CalendarRequestDTO calendarRequestDTO) {
+    public CalendarResponseDTO getCalendar(Long accountId, LocalDate from, LocalDate to) {
 
-        log.info("Start finding calendar with account id: {} and year:{}", calendarRequestDTO.getAccountId(), calendarRequestDTO.getYear());
+        log.info("Start finding calendar with account id: {}.From {} to {}", accountId, from, to);
 //        check existAccountById(id).orElseThrow(() -> new NotFoundException("Not found account with id: %s".format(req.getId()))
-        Long accountId = calendarRequestDTO.getAccountId();
 
-        LocalDate startDate = LocalDate.of(Math.toIntExact(calendarRequestDTO.getYear()), Month.JANUARY, 1);
-        LocalDate finishDate = LocalDate.of(Math.toIntExact(calendarRequestDTO.getYear()), Month.DECEMBER, 31);
-        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationGreaterThanEqualAndDateOfCreationLessThan(
+        if (from.getYear() != to.getYear()) {
+            throw new CalendarBusinessException("This period more than 1 year! Please shorten the period!");
+        }
+
+        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationPhotoGreaterThanEqualAndDateOfCreationPhotoLessThan(
                 accountId,
-                startDate,
-                finishDate);
+                from,
+                to);
 
         log.info("Calendar found and start building response for calendar: {}", photos);
         return CalendarResponseDTO
                 .builder()
-                .year(calendarRequestDTO.getYear())
-                .days(buildDaysResponseList(startDate, finishDate, photos))
+                .year((long) from.getYear())
+                .month(from.getMonth().equals(to.getMonth()) ? from.getMonth() : null)
+                .days(buildDaysResponseList(from, to, photos))
                 .build();
     }
 
     @Override
-    public CalendarResponseDTO getMonth(MonthRequestDTO monthRequestDTO) {
-
-        log.info("Start finding calendar(month) with account id: {}, year:{}, month: {}",
-                monthRequestDTO.getAccountId(), monthRequestDTO.getYear(), monthRequestDTO.getMonth());
-//        check existAccountById(id).orElseThrow(() -> new NotFoundException("Not found account with id: %s".format(req.getId()))
-        Long accountId = monthRequestDTO.getAccountId();
-
-
-        int year = Math.toIntExact(monthRequestDTO.getYear());
-        Month month = Month.of(Math.toIntExact(monthRequestDTO.getMonth()));
-        LocalDate startDate = LocalDate.of(year, month, 1);
-        LocalDate finishDate = LocalDate.of(year, month, month.length(Year.isLeap(year)));
-
-        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationGreaterThanEqualAndDateOfCreationLessThan(
-                accountId,
-                startDate,
-                finishDate);
-
-        log.info("Calendar found and start building response for calendar: {}", photos);
-        return CalendarResponseDTO
-                .builder()
-                .year(monthRequestDTO.getYear())
-                .month(month)
-                .days(buildDaysResponseList(startDate, finishDate, photos))
-                .build();
-    }
-
-    @Override
-    public DayResponseDTO getDay(DayRequestDTO dayRequestDTO) {
+    public DayResponseDTO getDay(Long accountId, LocalDate day) {
 
         log.info("Start finding photos for date:{}  with account id: {}",
-                dayRequestDTO.getAccountId(), dayRequestDTO.getDay());
+                accountId, day);
 //        check existAccountById(id).orElseThrow(() -> new NotFoundException("Not found account with id: %s".format(req.getId()))
-        Long accountId = dayRequestDTO.getAccountId();
 
-        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationGreaterThanEqualAndDateOfCreationLessThan(
+        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationPhoto(
                 accountId,
-                dayRequestDTO.getDay(),
-                dayRequestDTO.getDay());
+                day);
 
         log.info("Photos for date found and start building response: {}", photos);
         return DayResponseDTO
                 .builder()
-                .date(dayRequestDTO.getDay())
+                .date(day)
                 .photos(buildPhotoResponseList(photos, true))
                 .build();
     }

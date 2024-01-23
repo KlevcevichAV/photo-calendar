@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
-    List<Photo> findAllByAccountIdAndDateOfCreationGreaterThanEqualAndDateOfCreationLessThan(Long accountId, LocalDate startDate, LocalDate finishDate);
+    List<Photo> findAllByAccountIdAndDateOfCreationPhotoGreaterThanEqualAndDateOfCreationPhotoLessThan(Long accountId, LocalDate startDate, LocalDate finishDate);
+    List<Photo> findAllByAccountIdAndDateOfCreationPhoto(Long accountId, LocalDate dateOfCreationPhoto);
 }

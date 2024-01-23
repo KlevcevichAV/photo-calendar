@@ -57,7 +57,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    @PatchMapping("/{id}/changePassword")
+    @PatchMapping("/{id}/change-password")
     public ResponseEntity<SimpleResponseDTO> updatePassword(@RequestBody @ Valid UserUpdatePasswordDTO userUpdatePasswordDTO) {
 
         SimpleResponseDTO simpleResponseDTO = userService.updatePassword(userUpdatePasswordDTO);
