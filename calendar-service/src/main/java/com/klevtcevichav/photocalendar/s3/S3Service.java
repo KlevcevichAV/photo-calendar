@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -23,6 +24,7 @@ public class S3Service {
     @Value("${aws.bucket-name}")
     private final String bucketName;
 
+    @Transactional
     public void putObject(String key, byte[] file) {
 
         log.info("Start load file to S3 with key: {}", key);

@@ -3,5 +3,7 @@ spring:
     openfeign:
       client:
         config:
-          auth:
+          user:
             url: http://localhost:9091/api/v1/users
+          auth:
+            url: http://localhost:9091/api/v1/auth

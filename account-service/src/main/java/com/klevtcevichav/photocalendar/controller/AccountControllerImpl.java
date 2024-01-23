@@ -1,5 +1,6 @@
 package com.klevtcevichav.photocalendar.controller;
 
+import com.klevtcevichav.photocalendar.account.client.AccountClientApi;
 import com.klevtcevichav.photocalendar.account.dto.request.AccountUpdateRequestDTO;
 import com.klevtcevichav.photocalendar.account.dto.response.AccountResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/accounts")
-public class AccountControllerImpl implements AccountController{
+public class AccountControllerImpl implements AccountClientApi {
 
     private final AccountService accountService;
 

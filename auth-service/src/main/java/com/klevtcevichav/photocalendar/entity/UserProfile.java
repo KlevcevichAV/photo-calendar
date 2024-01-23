@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User extends AbstractUser {
+public class UserProfile extends AbstractUser {
 
     private String password;
 }

@@ -12,6 +12,7 @@ import com.klevtcevichav.photocalendar.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +26,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountUpdateRequestMapper accountUpdateRequestMapper;
 
     @Override
+    @Transactional
     public AccountResponseDTO createAccount(Long userId) {
         log.info("Start creating account with user id: {}", userId);
 
@@ -39,6 +41,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public AccountResponseDTO updateAccount(AccountUpdateRequestDTO accountUpdateRequestDTO) {
         log.info("Start updating account info: {}", accountUpdateRequestDTO);
 
@@ -54,6 +57,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public SimpleResponseDTO deleteAccount(Long id) {
         log.info("Start deleting account with id: {}", id);
 
