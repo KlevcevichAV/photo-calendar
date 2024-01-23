@@ -1,5 +1,6 @@
 package com.klevtcevichav.photocalendar.controller;
 
+import com.klevtcevichav.photocalendar.auth.client.UserClientApi;
 import com.klevtcevichav.photocalendar.auth.dto.request.UserRequestDTO;
 import com.klevtcevichav.photocalendar.auth.dto.request.UserUpdatePasswordDTO;
 import com.klevtcevichav.photocalendar.auth.dto.request.UserUpdateRequestDTO;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/users")
-public class UserControllerImpl implements UserController {
+public class UserControllerImpl implements UserClientApi {
 
     private final UserService userService;
 

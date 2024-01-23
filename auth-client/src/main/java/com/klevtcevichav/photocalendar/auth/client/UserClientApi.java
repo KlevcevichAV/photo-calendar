@@ -11,8 +11,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient("auth")
-interface UserClientApi {
+@FeignClient("user")
+public interface UserClientApi {
 
     @PostMapping("/registration")
     ResponseEntity<SimpleResponseDTO> registrationUser(@RequestBody @Valid UserRequestDTO userRequestDTO);
