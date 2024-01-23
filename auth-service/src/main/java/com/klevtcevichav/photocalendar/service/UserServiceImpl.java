@@ -11,7 +11,7 @@ import com.klevtcevichav.photocalendar.core.exception.NotFoundException;
 import com.klevtcevichav.photocalendar.dto.mapper.UserRequestMapper;
 import com.klevtcevichav.photocalendar.dto.mapper.UserResponseMapper;
 import com.klevtcevichav.photocalendar.dto.mapper.UserUpdateRequestMapper;
-import com.klevtcevichav.photocalendar.entity.User;
+import com.klevtcevichav.photocalendar.entity.UserProfile;
 import com.klevtcevichav.photocalendar.exception.UserBusinessException;
 import com.klevtcevichav.photocalendar.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -42,17 +42,17 @@ public class UserServiceImpl implements UserService {
     public SimpleResponseDTO registrationUser(UserRequestDTO userRequestDTO) {
 
         log.info("Start registration user: {}", userRequestDTO);
-        User user = userRequestMapper.userRequestDTOToUser(userRequestDTO);
+        UserProfile userProfile = userRequestMapper.userRequestDTOToUser(userRequestDTO);
 
-        if(userRepository.existsByEmailOrUsername(user.getEmail(), user.getUsername())) {
+        if(userRepository.existsByEmailOrUsername(userProfile.getEmail(), userProfile.getUsername())) {
             throw new UserBusinessException("This email or username is exist!");
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User savedUser = userRepository.save(user);
+        userProfile.setPassword(passwordEncoder.encode(userProfile.getPassword()));
+        UserProfile savedUserProfile = userRepository.save(userProfile);
 
-        log.info("Start creating account for user with id={}", savedUser.getAccountId());
-        ResponseEntity<AccountResponseDTO> response = accountClientApi.createAccount(savedUser.getId());
+        log.info("Start creating account for user with id={}", savedUserProfile.getAccountId());
+        ResponseEntity<AccountResponseDTO> response = accountClientApi.createAccount(savedUserProfile.getId());
         if (!HttpStatus.CREATED.equals(response.getStatusCode())
                 || Objects.isNull(response.getBody())
                 || Objects.isNull(response.getBody().getId())) {
@@ -60,10 +60,10 @@ public class UserServiceImpl implements UserService {
             throw new UserBusinessException("Account was not created!");
         }
 
-        savedUser.setAccountId(response.getBody().getId());
-        userRepository.save(savedUser);
+        savedUserProfile.setAccountId(response.getBody().getId());
+        userRepository.save(savedUserProfile);
 
-        log.info("User created: {}", savedUser);
+        log.info("User created: {}", savedUserProfile);
         return new SimpleResponseDTO();
     }
 
@@ -72,14 +72,14 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO updateUser(UserUpdateRequestDTO userUpdateRequestDTO) {
 
         log.info("Start updating user with id: {}", userUpdateRequestDTO.getId());
-        User user = userRepository.findById(userUpdateRequestDTO.getId()).orElseThrow(() -> new NotFoundException("Not found"));
+        UserProfile userProfile = userRepository.findById(userUpdateRequestDTO.getId()).orElseThrow(() -> new NotFoundException("Not found"));
 
-        userUpdateRequestMapper.updateUserFromDTO(userUpdateRequestDTO, user);
+        userUpdateRequestMapper.updateUserFromDTO(userUpdateRequestDTO, userProfile);
 
-        User savedUser = userRepository.save(user);
+        UserProfile savedUserProfile = userRepository.save(userProfile);
 
-        log.info("User with id={} updated: {}", savedUser.getId(), savedUser);
-        return userResponseMapper.userToUserResponseDTO(savedUser);
+        log.info("User with id={} updated: {}", savedUserProfile.getId(), savedUserProfile);
+        return userResponseMapper.userToUserResponseDTO(savedUserProfile);
     }
 
     @Override
@@ -87,11 +87,11 @@ public class UserServiceImpl implements UserService {
     public SimpleResponseDTO delete(Long id) {
 
         log.info("Start deleting user with id:{}", id);
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found"));
+        UserProfile userProfile = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found"));
 
-        user.setDateOfDelete(LocalDateTime.now());
+        userProfile.setDateOfDelete(LocalDateTime.now());
 
-        userRepository.save(user);
+        userRepository.save(userProfile);
 
         log.info("User with id: {} deleted", id);
         return new SimpleResponseDTO();
@@ -101,12 +101,12 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO getUserById(Long id) {
 
         log.info("Start finding user with id: {}", id);
-        User user = userRepository.findById(id)
+        UserProfile userProfile = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User not found with id : " + id)
         );
 
-        log.info("User with id:{} found:{}", id, user);
-        return userResponseMapper.userToUserResponseDTO(user);
+        log.info("User with id:{} found:{}", id, userProfile);
+        return userResponseMapper.userToUserResponseDTO(userProfile);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
     public SimpleResponseDTO updatePassword(UserUpdatePasswordDTO userUpdatePasswordDTO) {
 
         log.info("Start updating password for user with id: {}", userUpdatePasswordDTO.getId());
-        User user = userRepository.findById(userUpdatePasswordDTO.getId())
+        UserProfile userProfile = userRepository.findById(userUpdatePasswordDTO.getId())
                 .orElseThrow(() -> new NotFoundException("User not found with id : %d".formatted(userUpdatePasswordDTO.getId()))
                 );
 
@@ -122,14 +122,14 @@ public class UserServiceImpl implements UserService {
             throw new UserBusinessException("Password and confirm password are not equals!");
         }
 
-        if (user.getPassword().equals(userUpdatePasswordDTO.getPassword())) {
+        if (userProfile.getPassword().equals(userUpdatePasswordDTO.getPassword())) {
             throw new UserBusinessException("Old password and new password is equals!");
         }
 
-        user.setPassword(passwordEncoder.encode(userUpdatePasswordDTO.getPassword()));
-        userRepository.save(user);
+        userProfile.setPassword(passwordEncoder.encode(userUpdatePasswordDTO.getPassword()));
+        userRepository.save(userProfile);
 
-        log.info("Password updated for user with id: {}", user.getId());
+        log.info("Password updated for user with id: {}", userProfile.getId());
         return new SimpleResponseDTO();
     }
 
