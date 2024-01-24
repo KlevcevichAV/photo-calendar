@@ -27,16 +27,16 @@ public class PhotoControllerImpl implements PhotoClientApi {
 
     @Override
     @DeleteMapping("/{photoId}")
-    public ResponseEntity<SimpleResponseDTO> removePhoto(@PathVariable Long photoId) {
-        SimpleResponseDTO simpleResponseDTO = photoService.removePhoto(photoId);
+    public ResponseEntity<SimpleResponseDTO> removePhoto(@PathVariable Long photoId, @RequestParam Long accountId) {
+        SimpleResponseDTO simpleResponseDTO = photoService.removePhoto(photoId, accountId);
 
         return new ResponseEntity<>(simpleResponseDTO, HttpStatus.NO_CONTENT);
     }
 
     @Override
     @GetMapping("/{photoId}")
-    public ResponseEntity<PhotoResponseDTO> getPhoto(@PathVariable Long photoId) {
-        PhotoResponseDTO photoResponseDTO = photoService.getPhoto(photoId);
+    public ResponseEntity<PhotoResponseDTO> getPhoto(@PathVariable Long photoId, @RequestParam Long accountId) {
+        PhotoResponseDTO photoResponseDTO = photoService.getPhoto(photoId, accountId);
 
         return ResponseEntity.ok(photoResponseDTO);
     }

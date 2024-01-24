@@ -7,6 +7,6 @@ import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
 public interface PhotoService {
 
     SimpleResponseDTO addPhoto(AddPhotoRequestDTO addPhotoRequestDTO);
-    SimpleResponseDTO removePhoto(Long photoId);
-    PhotoResponseDTO getPhoto(Long photoId);
+    SimpleResponseDTO removePhoto(Long photoId, Long accountId);
+    PhotoResponseDTO getPhoto(Long photoId, Long accountId);
 }
