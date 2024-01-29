@@ -10,7 +10,6 @@ import com.klevtcevichav.photocalendar.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +24,9 @@ public class UserControllerImpl implements UserClientApi {
     @PostMapping("/registration")
     public ResponseEntity<SimpleResponseDTO> registrationUser(@RequestBody @Valid UserRequestDTO userRequestDTO) {
 
-        SimpleResponseDTO simpleResponseDTO = userService.registrationUser(userRequestDTO);
+        userService.registrationUser(userRequestDTO);
 
-        return new ResponseEntity<>(simpleResponseDTO, HttpStatus.CREATED);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
@@ -43,9 +42,9 @@ public class UserControllerImpl implements UserClientApi {
     @DeleteMapping("/{id}")
     public ResponseEntity<SimpleResponseDTO> delete(@PathVariable("id") @Positive Long id) {
 
-        SimpleResponseDTO simpleResponseDTO = userService.delete(id);
+        userService.delete(id);
 
-        return ResponseEntity.ok(simpleResponseDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
@@ -61,9 +60,9 @@ public class UserControllerImpl implements UserClientApi {
     @PatchMapping("/{id}/change-password")
     public ResponseEntity<SimpleResponseDTO> updatePassword(@RequestBody @ Valid UserUpdatePasswordDTO userUpdatePasswordDTO) {
 
-        SimpleResponseDTO simpleResponseDTO = userService.updatePassword(userUpdatePasswordDTO);
+        userService.updatePassword(userUpdatePasswordDTO);
 
-        return ResponseEntity.ok(simpleResponseDTO);
+        return ResponseEntity.noContent().build();
     }
 
 }

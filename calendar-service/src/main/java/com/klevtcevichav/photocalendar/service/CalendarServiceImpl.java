@@ -41,7 +41,7 @@ public class CalendarServiceImpl implements CalendarService{
             throw new CalendarBusinessException("This period more than 1 year! Please shorten the period!");
         }
 
-        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationPhotoGreaterThanEqualAndDateOfCreationPhotoLessThan(
+        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationPhotoGreaterThanEqualAndDateOfCreationPhotoLessThanAndDateOfDeleteNull(
                 accountId,
                 from,
                 to);
@@ -62,7 +62,7 @@ public class CalendarServiceImpl implements CalendarService{
                 accountId, day);
         getAccount(accountId);
 
-        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationPhoto(
+        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationPhotoAndDateOfDeleteNull(
                 accountId,
                 day);
 

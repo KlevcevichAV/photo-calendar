@@ -7,6 +7,7 @@ import com.klevtcevichav.photocalendar.auth.dto.request.UserUpdatePasswordDTO;
 import com.klevtcevichav.photocalendar.auth.dto.request.UserUpdateRequestDTO;
 import com.klevtcevichav.photocalendar.auth.dto.response.UserResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
+import com.klevtcevichav.photocalendar.core.exception.BadRequestException;
 import com.klevtcevichav.photocalendar.core.exception.NotFoundException;
 import com.klevtcevichav.photocalendar.dto.mapper.UserRequestMapper;
 import com.klevtcevichav.photocalendar.dto.mapper.UserResponseMapper;
@@ -91,6 +92,12 @@ public class UserServiceImpl implements UserService {
 
         userProfile.setDateOfDelete(LocalDateTime.now());
 
+        ResponseEntity<SimpleResponseDTO> accountClientApiResponse = accountClientApi.deleteAccountByUserId(id);
+
+        if (!HttpStatus.NO_CONTENT.equals(accountClientApiResponse.getStatusCode())) {
+            throw new UserBusinessException("Can't delete account with user id: " + id);
+        }
+
         userRepository.save(userProfile);
 
         log.info("User with id: {} deleted", id);
@@ -118,12 +125,15 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException("User not found with id : %d".formatted(userUpdatePasswordDTO.getId()))
                 );
 
+        if (!passwordEncoder.matches(userUpdatePasswordDTO.getOldPassword(), userProfile.getPassword())) {
+            throw new BadRequestException("Old password is incorrect!");
+        }
         if (!userUpdatePasswordDTO.getPassword().equals(userUpdatePasswordDTO.getConfirmPassword())) {
-            throw new UserBusinessException("Password and confirm password are not equals!");
+            throw new BadRequestException("Password and confirm password are not equals!");
         }
 
-        if (userProfile.getPassword().equals(userUpdatePasswordDTO.getPassword())) {
-            throw new UserBusinessException("Old password and new password is equals!");
+        if (passwordEncoder.matches(userUpdatePasswordDTO.getPassword(), userProfile.getPassword())) {
+            throw new BadRequestException("Old password and new password is equals!");
         }
 
         userProfile.setPassword(passwordEncoder.encode(userUpdatePasswordDTO.getPassword()));

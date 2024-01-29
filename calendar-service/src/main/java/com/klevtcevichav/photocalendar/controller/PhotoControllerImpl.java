@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/calendar/photos")
@@ -19,18 +21,18 @@ public class PhotoControllerImpl implements PhotoClientApi {
 
     @Override
     @PostMapping
-    public ResponseEntity<SimpleResponseDTO> addPhoto(AddPhotoRequestDTO addPhotoRequestDTO) {
-        SimpleResponseDTO simpleResponseDTO = photoService.addPhoto(addPhotoRequestDTO);
+    public ResponseEntity<PhotoResponseDTO> addPhoto(AddPhotoRequestDTO addPhotoRequestDTO) throws IOException {
+        PhotoResponseDTO photoResponseDTO = photoService.addPhoto(addPhotoRequestDTO);
 
-        return new ResponseEntity<>(simpleResponseDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(photoResponseDTO, HttpStatus.CREATED);
     }
 
     @Override
     @DeleteMapping("/{photoId}")
     public ResponseEntity<SimpleResponseDTO> removePhoto(@PathVariable Long photoId, @RequestParam Long accountId) {
-        SimpleResponseDTO simpleResponseDTO = photoService.removePhoto(photoId, accountId);
+        photoService.removePhoto(photoId, accountId);
 
-        return new ResponseEntity<>(simpleResponseDTO, HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
     @Override

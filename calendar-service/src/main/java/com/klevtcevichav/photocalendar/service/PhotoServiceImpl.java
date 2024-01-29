@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -36,7 +37,7 @@ public class PhotoServiceImpl implements PhotoService{
 
     @Override
     @Transactional
-    public SimpleResponseDTO addPhoto(AddPhotoRequestDTO addPhotoRequestDTO) {
+    public PhotoResponseDTO addPhoto(AddPhotoRequestDTO addPhotoRequestDTO) throws IOException {
 
         log.info("Start adding photo to account with id:{}. Photo:{}", addPhotoRequestDTO.getAccountId(), addPhotoRequestDTO);
         getAccount(addPhotoRequestDTO.getAccountId());
@@ -45,19 +46,19 @@ public class PhotoServiceImpl implements PhotoService{
         photo.setKey(UUID.randomUUID());
 
         log.info("Call S3 service for load photo to S3 with key: {}", photo.getKey());
-        s3Service.putObject(photo.getKey().toString(), addPhotoRequestDTO.getPhoto());
+        s3Service.putObject(photo.getKey().toString(), addPhotoRequestDTO.getPhoto().getBytes());
         Photo savedPhoto = photoRepository.save(photo);
 
         log.info("Photo added: {}", savedPhoto);
-        return new SimpleResponseDTO();
+        return photoResponseMapper.photoToPhotoResponseDTO(photo);
     }
 
     @Override
     @Transactional
-    public SimpleResponseDTO removePhoto(Long id, Long accountId) {
+    public void removePhoto(Long id, Long accountId) {
 
         log.info("Start deleting photo with id: {}", id);
-        Photo photo = photoRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found photo by id: " + id));
+        Photo photo = getPhotoById(id);
         AccountResponseDTO accountResponseDTO = getAccount(accountId);
         if (!photo.getAccountId().equals(accountResponseDTO.getId())) {
             throw new CalendarBusinessException("You can't delete photo with id: " + id);
@@ -67,18 +68,20 @@ public class PhotoServiceImpl implements PhotoService{
         photoRepository.save(photo);
 
         log.info("Photo with id: {} deleted", id);
-        return new SimpleResponseDTO();
+        new SimpleResponseDTO();
     }
 
     @Override
     public PhotoResponseDTO getPhoto(Long id, Long accountId) {
 
         log.info("Start finding photo with id: {}", id);
-        Photo photo = photoRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found photo by id: " + id));
         AccountResponseDTO accountResponseDTO = getAccount(accountId);
 
-        if (photo.getAccountId().equals(accountResponseDTO.getId())) {
-            throw new CalendarBusinessException("You can't getting photo with id: " + id);
+        Photo photo = getPhotoById(id);
+
+        if (!photo.getAccountId().equals(accountResponseDTO.getId())) {
+            log.info(String.format("Account with id: %d can not getting photo with id: %d", accountId, id));
+            throw new NotFoundException("Not found photo by id: " + id);
         }
 
         PhotoResponseDTO photoResponseDTO = photoResponseMapper.photoToPhotoResponseDTO(photo);
@@ -87,6 +90,16 @@ public class PhotoServiceImpl implements PhotoService{
 
         log.info("Photo with id:{} found:{}", id, photoResponseDTO);
         return photoResponseDTO;
+    }
+
+    private Photo getPhotoById(Long id) {
+
+        Photo photo = photoRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found photo by id: " + id));
+        if (Objects.nonNull(photo.getDateOfDelete())) {
+            log.info(String.format("Photo with id: %d deleted", id));
+            throw new NotFoundException("Not found photo by id: " + id);
+        }
+        return photo;
     }
 
     private AccountResponseDTO getAccount(Long accountId) {

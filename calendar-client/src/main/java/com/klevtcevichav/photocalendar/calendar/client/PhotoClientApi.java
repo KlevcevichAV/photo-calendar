@@ -7,11 +7,13 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @FeignClient("photo")
 public interface PhotoClientApi {
 
     @PostMapping
-    ResponseEntity<SimpleResponseDTO> addPhoto(AddPhotoRequestDTO addPhotoRequestDTO);
+    ResponseEntity<PhotoResponseDTO> addPhoto(AddPhotoRequestDTO addPhotoRequestDTO) throws IOException;
 
     @DeleteMapping("/{photoId}")
     ResponseEntity<SimpleResponseDTO> removePhoto(@PathVariable Long photoId, @RequestParam Long accountId);

@@ -38,9 +38,9 @@ public class AccountControllerImpl implements AccountClientApi {
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<SimpleResponseDTO> deleteAccount(@PathVariable(name = "id") @Positive Long id) {
-        SimpleResponseDTO responseDTO = accountService.deleteAccount(id);
+        accountService.deleteAccount(id);
 
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
@@ -57,6 +57,13 @@ public class AccountControllerImpl implements AccountClientApi {
         AccountResponseDTO accountResponseDTO = accountService.getAccountByUserId(userId);
 
         return ResponseEntity.ok(accountResponseDTO);
+    }
+
+    @Override
+    public ResponseEntity<SimpleResponseDTO> deleteAccountByUserId(Long userId) {
+        accountService.deleteAccountByUserId(userId);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

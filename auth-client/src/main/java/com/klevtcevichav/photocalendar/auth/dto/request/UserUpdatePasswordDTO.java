@@ -14,6 +14,8 @@ public class UserUpdatePasswordDTO {
     @NotNull
     private Long id;
     @NotEmpty
+    private String oldPassword;
+    @NotEmpty
     private String password;
     @NotEmpty
     private String confirmPassword;
