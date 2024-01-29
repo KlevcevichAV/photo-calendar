@@ -1,19 +1,25 @@
 package com.klevtcevichav.photocalendar.service;
 
+import com.klevtcevichav.photocalendar.account.client.AccountClientApi;
+import com.klevtcevichav.photocalendar.account.dto.response.AccountResponseDTO;
 import com.klevtcevichav.photocalendar.calendar.dto.response.CalendarResponseDTO;
 import com.klevtcevichav.photocalendar.calendar.dto.response.DayResponseDTO;
 import com.klevtcevichav.photocalendar.calendar.dto.response.PhotoResponseDTO;
+import com.klevtcevichav.photocalendar.core.exception.NotFoundException;
 import com.klevtcevichav.photocalendar.entity.Photo;
 import com.klevtcevichav.photocalendar.exception.CalendarBusinessException;
 import com.klevtcevichav.photocalendar.repository.PhotoRepository;
 import com.klevtcevichav.photocalendar.s3.S3Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,18 +29,19 @@ public class CalendarServiceImpl implements CalendarService{
 
     private final S3Service s3Service;
     private final PhotoRepository photoRepository;
+    private final AccountClientApi accountClientApi;
 
     @Override
     public CalendarResponseDTO getCalendar(Long accountId, LocalDate from, LocalDate to) {
 
         log.info("Start finding calendar with account id: {}.From {} to {}", accountId, from, to);
-//        check existAccountById(id).orElseThrow(() -> new NotFoundException("Not found account with id: %s".format(req.getId()))
+        getAccount(accountId);
 
         if (from.getYear() != to.getYear()) {
             throw new CalendarBusinessException("This period more than 1 year! Please shorten the period!");
         }
 
-        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationPhotoGreaterThanEqualAndDateOfCreationPhotoLessThan(
+        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationPhotoGreaterThanEqualAndDateOfCreationPhotoLessThanAndDateOfDeleteNull(
                 accountId,
                 from,
                 to);
@@ -53,9 +60,9 @@ public class CalendarServiceImpl implements CalendarService{
 
         log.info("Start finding photos for date:{}  with account id: {}",
                 accountId, day);
-//        check existAccountById(id).orElseThrow(() -> new NotFoundException("Not found account with id: %s".format(req.getId()))
+        getAccount(accountId);
 
-        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationPhoto(
+        List<Photo> photos = photoRepository.findAllByAccountIdAndDateOfCreationPhotoAndDateOfDeleteNull(
                 accountId,
                 day);
 
@@ -65,6 +72,15 @@ public class CalendarServiceImpl implements CalendarService{
                 .date(day)
                 .photos(buildPhotoResponseList(photos, true))
                 .build();
+    }
+
+    private void getAccount(Long accountId) {
+
+        log.info("Start calling Account service for finding account with id: {}", accountId);
+        ResponseEntity<AccountResponseDTO> accountResponseEntity = accountClientApi.getAccount(accountId);
+        if (!HttpStatus.OK.equals(accountResponseEntity.getStatusCode()) || Objects.isNull(accountResponseEntity.getBody())) {
+            throw new NotFoundException("Can not find account by id: " + accountId);
+        }
     }
 
     private List<DayResponseDTO> buildDaysResponseList(LocalDate startDate, LocalDate finishDate, List<Photo> photos) {

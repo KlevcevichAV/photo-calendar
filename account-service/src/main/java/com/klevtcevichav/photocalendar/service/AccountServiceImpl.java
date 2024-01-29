@@ -58,7 +58,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public SimpleResponseDTO deleteAccount(Long id) {
+    public void deleteAccount(Long id) {
         log.info("Start deleting account with id: {}", id);
 
         Account account = accountRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", id)));
@@ -68,7 +68,7 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(account);
 
         log.info("Account with id {} deleted!", id);
-        return new SimpleResponseDTO();
+        new SimpleResponseDTO();
     }
 
     @Override
@@ -88,5 +88,20 @@ public class AccountServiceImpl implements AccountService {
 
         log.info("Account with user id={} found: {}", userId, account);
         return accountResponseMapper.accountToAccountResponseDTO(account);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAccountByUserId(Long userId) {
+        log.info("Start deleting account with user id: {}", userId);
+
+        Account account = accountRepository.findAccountByUserId(userId).orElseThrow(() -> new NotFoundException(String.format("Not found account with user id: %d", userId)));
+
+        account.setDateOfDelete(LocalDateTime.now());
+
+        accountRepository.save(account);
+
+        log.info("Account with user id {} deleted!", userId);
+        new SimpleResponseDTO();
     }
 }

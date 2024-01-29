@@ -5,20 +5,19 @@ import com.klevtcevichav.photocalendar.calendar.dto.response.PhotoResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @FeignClient("photo")
 public interface PhotoClientApi {
 
     @PostMapping
-    ResponseEntity<SimpleResponseDTO> addPhoto(AddPhotoRequestDTO addPhotoRequestDTO);
+    ResponseEntity<PhotoResponseDTO> addPhoto(AddPhotoRequestDTO addPhotoRequestDTO) throws IOException;
 
     @DeleteMapping("/{photoId}")
-    ResponseEntity<SimpleResponseDTO> removePhoto(@PathVariable Long photoId);
+    ResponseEntity<SimpleResponseDTO> removePhoto(@PathVariable Long photoId, @RequestParam Long accountId);
 
     @GetMapping("/{photoId}")
-    ResponseEntity<PhotoResponseDTO> getPhoto(@PathVariable Long photoId);
+    ResponseEntity<PhotoResponseDTO> getPhoto(@PathVariable Long photoId, @RequestParam Long accountId);
 }

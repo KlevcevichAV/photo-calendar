@@ -10,4 +10,4 @@ spring:
     password: auth
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update

@@ -31,4 +31,7 @@ public interface AccountClientApi {
     @GetMapping("/user/{userId}")
     ResponseEntity<AccountResponseDTO> getAccountByUserId(@PathVariable(name = "userId") @Positive Long userId);
 
+    @DeleteMapping("/user/{userId}")
+    ResponseEntity<SimpleResponseDTO> deleteAccountByUserId(@PathVariable(name = "userId") @Positive Long userId);
+
 }
