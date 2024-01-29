@@ -1,45 +1,40 @@
 package com.klevtcevichav.photocalendar.controller;
 
-import com.klevtcevichav.photocalendar.calendar.dto.request.CalendarRequestDTO;
-import com.klevtcevichav.photocalendar.calendar.dto.request.DayRequestDTO;
-import com.klevtcevichav.photocalendar.calendar.dto.request.MonthRequestDTO;
+import com.klevtcevichav.photocalendar.calendar.client.CalendarClientApi;
 import com.klevtcevichav.photocalendar.calendar.dto.response.CalendarResponseDTO;
 import com.klevtcevichav.photocalendar.calendar.dto.response.DayResponseDTO;
 import com.klevtcevichav.photocalendar.service.CalendarService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/calendar")
+import java.time.LocalDate;
+
+@RestController("/calendars")
 @AllArgsConstructor
-public class CalendarControllerImpl implements CalendarController{
+public class CalendarControllerImpl implements CalendarClientApi {
 
     private final CalendarService calendarService;
 
     @Override
-    @GetMapping("/{accountId}/{year}")
-    public ResponseEntity<CalendarResponseDTO> getCalendar(@RequestBody @Valid CalendarRequestDTO calendarRequestDTO) {
+    @GetMapping
+    public ResponseEntity<CalendarResponseDTO> getCalendar(@RequestParam Long accountId,
+                                                           @RequestParam LocalDate from,
+                                                           @RequestParam LocalDate to) {
 
-        CalendarResponseDTO calendarResponseDTO = calendarService.getCalendar(calendarRequestDTO);
+        CalendarResponseDTO calendarResponseDTO = calendarService.getCalendar(accountId, from, to);
 
-        return new ResponseEntity<>(calendarResponseDTO, HttpStatus.OK);
+        return ResponseEntity.ok(calendarResponseDTO);
     }
 
     @Override
-    @GetMapping("/{accountId}/{year}/{month}")
-    public ResponseEntity<CalendarResponseDTO> getMonth(@RequestBody @Valid MonthRequestDTO monthRequestDTO) {
-        CalendarResponseDTO calendarResponseDTO = calendarService.getMonth(monthRequestDTO);
+    @GetMapping("/days/{day}")
+    public ResponseEntity<DayResponseDTO> getDay(@PathVariable LocalDate day, @RequestParam Long accountId) {
+        DayResponseDTO dayResponseDTO = calendarService.getDay(accountId, day);
 
-        return new ResponseEntity<>(calendarResponseDTO, HttpStatus.OK);
-    }
-
-    @Override
-    @GetMapping("/{accountId}/{year}/{month}/{day}")
-    public ResponseEntity<DayResponseDTO> getDay(@RequestBody @Valid DayRequestDTO monthRequestDTO) {
-        return null;
+        return ResponseEntity.ok(dayResponseDTO);
     }
 }

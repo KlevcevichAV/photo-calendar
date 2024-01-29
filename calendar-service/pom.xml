@@ -15,6 +15,9 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <lombok.plugin.path.version>1.18.30</lombok.plugin.path.version>
+        <mapstruct.plugin.path.version>1.4.2.Final</mapstruct.plugin.path.version>
+        <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
     </properties>
 
     <dependencies>
@@ -27,6 +30,11 @@
         <dependency>
             <groupId>com.klevtcevichav.photocalendar</groupId>
             <artifactId>calendar-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.klevtcevichav.photocalendar</groupId>
+            <artifactId>account-client</artifactId>
         </dependency>
 
         <!-- SPRING dependencies -->
@@ -86,7 +94,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
                     <source>15</source>
                     <target>15</target>
@@ -94,12 +102,12 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.30</version>
+                            <version>${lombok.plugin.path.version}</version>
                         </path>
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>1.4.2.Final</version>
+                            <version>${mapstruct.plugin.path.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

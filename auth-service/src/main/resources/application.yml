@@ -1,6 +1,7 @@
 server:
   port: 9091
 
+
 spring:
   cloud:
     openfeign:
@@ -14,6 +15,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/auth_db
     username: auth
     password: auth
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 eureka:
   client:

@@ -1,5 +1,6 @@
 package com.klevtcevichav.photocalendar.controller;
 
+import com.klevtcevichav.photocalendar.account.client.AccountClientApi;
 import com.klevtcevichav.photocalendar.account.dto.request.AccountUpdateRequestDTO;
 import com.klevtcevichav.photocalendar.account.dto.response.AccountResponseDTO;
 import com.klevtcevichav.photocalendar.core.dto.response.SimpleResponseDTO;
@@ -7,7 +8,6 @@ import com.klevtcevichav.photocalendar.service.AccountService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/accounts")
-@Log
-public class AccountControllerImpl implements AccountController{
+public class AccountControllerImpl implements AccountClientApi {
 
     private final AccountService accountService;
 
@@ -39,9 +38,9 @@ public class AccountControllerImpl implements AccountController{
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<SimpleResponseDTO> deleteAccount(@PathVariable(name = "id") @Positive Long id) {
-        SimpleResponseDTO responseDTO = accountService.deleteAccount(id);
+        accountService.deleteAccount(id);
 
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
@@ -58,6 +57,13 @@ public class AccountControllerImpl implements AccountController{
         AccountResponseDTO accountResponseDTO = accountService.getAccountByUserId(userId);
 
         return ResponseEntity.ok(accountResponseDTO);
+    }
+
+    @Override
+    public ResponseEntity<SimpleResponseDTO> deleteAccountByUserId(Long userId) {
+        accountService.deleteAccountByUserId(userId);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

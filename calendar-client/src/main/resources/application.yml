@@ -4,6 +4,6 @@ spring:
       client:
         config:
           calendar:
-            url: http://localhost:9090/api/v1/calendar
+            url: http://localhost:9092/api/v1/calendar
           photo:
-            url: http://localhost:9090/api/v1/photos
+            url: http://localhost:9092/api/v1/calendar/photos

@@ -8,3 +8,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/auth_db
     username: auth
     password: auth
+  jpa:
+    hibernate:
+      ddl-auto: update

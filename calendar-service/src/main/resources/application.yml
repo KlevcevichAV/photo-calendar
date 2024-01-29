@@ -1,13 +1,22 @@
 server:
-  port: 0
+  port: 9092
 
 spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          account:
+            url: http://localhost:9090/api/v1/accounts
   application:
     name: calendar
   datasource:
     url: jdbc:postgresql://localhost:5432/auth_db
     username: auth
     password: auth
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 eureka:
   client:
@@ -15,5 +24,7 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 aws:
+  s3:
+    buckets:
+      photo: photo-calendar
   region: eu-west-1
-  bucket-name: test
