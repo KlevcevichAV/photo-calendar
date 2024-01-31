@@ -9,6 +9,7 @@ import com.klevtcevichav.photocalendar.dto.mapper.AccountUpdateRequestMapper;
 import com.klevtcevichav.photocalendar.enitty.Account;
 import com.klevtcevichav.photocalendar.exception.AccountBusinessException;
 import com.klevtcevichav.photocalendar.repository.AccountRepository;
+import com.klevtcevichav.photocalendar.specification.AccountSpecification;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,8 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public AccountResponseDTO createAccount(Long userId) {
         log.info("Start creating account with user id: {}", userId);
-
-        if (accountRepository.existsAccountByUserId(userId)) {
+//        TODO fix problem with null :((((
+        if (accountRepository.exists(AccountSpecification.findAccountByUserId(userId))) {
             throw new AccountBusinessException(String.format("Account with user id=%d exist!", userId));
         }
         Account account = Account.builder().userId(userId).build();
@@ -45,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountResponseDTO updateAccount(AccountUpdateRequestDTO accountUpdateRequestDTO) {
         log.info("Start updating account info: {}", accountUpdateRequestDTO);
 
-        Account account = accountRepository.findById(accountUpdateRequestDTO.getId())
+        Account account = accountRepository.findOne(AccountSpecification.findAccountById(accountUpdateRequestDTO.getId()))
                 .orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", accountUpdateRequestDTO.getId())));
 
         accountUpdateRequestMapper.updateAccountFromDTO(accountUpdateRequestDTO, account);
@@ -61,7 +62,8 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount(Long id) {
         log.info("Start deleting account with id: {}", id);
 
-        Account account = accountRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", id)));
+        Account account = accountRepository.findOne(AccountSpecification.findAccountById(id))
+                .orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", id)));
 
         account.setDateOfDelete(LocalDateTime.now());
 
@@ -74,7 +76,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponseDTO getAccount(Long id) {
         log.info("Start finding account with id: {}", id);
-        Account account = accountRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", id)));
+        Account account = accountRepository.findOne(AccountSpecification.findAccountById(id))
+                .orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", id)));
 
         log.info("Account with id={} found: {} ", id, account);
         return accountResponseMapper.accountToAccountResponseDTO(account);
@@ -84,7 +87,8 @@ public class AccountServiceImpl implements AccountService {
     public AccountResponseDTO getAccountByUserId(Long userId) {
         log.info("Start finding account with user id: {}", userId);
 
-        Account account = accountRepository.findAccountByUserId(userId).orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", userId)));
+        Account account = accountRepository.findOne(AccountSpecification.findAccountByUserId(userId))
+                .orElseThrow(() -> new NotFoundException(String.format("Not found account with id: %d", userId)));
 
         log.info("Account with user id={} found: {}", userId, account);
         return accountResponseMapper.accountToAccountResponseDTO(account);
@@ -95,7 +99,8 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccountByUserId(Long userId) {
         log.info("Start deleting account with user id: {}", userId);
 
-        Account account = accountRepository.findAccountByUserId(userId).orElseThrow(() -> new NotFoundException(String.format("Not found account with user id: %d", userId)));
+        Account account = accountRepository.findOne(AccountSpecification.findAccountByUserId(userId))
+                .orElseThrow(() -> new NotFoundException(String.format("Not found account with user id: %d", userId)));
 
         account.setDateOfDelete(LocalDateTime.now());
 

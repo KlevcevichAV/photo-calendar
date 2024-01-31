@@ -4,6 +4,7 @@ import com.klevtcevichav.photocalendar.core.entity.FullAbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDate;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@FieldNameConstants
 public class Account extends FullAbstractEntity {
 
     @Column
