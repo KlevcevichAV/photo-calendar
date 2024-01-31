@@ -12,19 +12,11 @@ import java.util.Objects;
 public class AccountSpecification {
 
     public static Specification<Account> findAccountById(Long id) {
-        if (Objects.isNull(id)) {
-            return null;
-        }
-
         return Specification.where(findNotDeletedAccount())
                 .and(findById(id));
     }
 
     public static Specification<Account> findAccountByUserId(Long userId) {
-        if (Objects.isNull(userId)) {
-            return null;
-        }
-
         return Specification.where(findNotDeletedAccount())
                 .and(findByUserId(userId));
     }

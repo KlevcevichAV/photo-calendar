@@ -12,9 +12,6 @@ import java.util.Objects;
 public class CalendarSpecification {
 
     public static Specification<Photo> findAllPhotoByAccountIdPeriod(Long accountId, LocalDate from, LocalDate to) {
-        if (Objects.isNull(accountId) || Objects.isNull(from) || Objects.isNull(to)) {
-            return null;
-        }
         return Specification.where(findAllDateOfDeleteIsNull())
                 .and(findAllByAccountId(accountId))
                 .and(findAllAfterThanDateOfCreationPhoto(from))
@@ -22,10 +19,6 @@ public class CalendarSpecification {
     }
 
     public static Specification<Photo> findAllPhotoByAccountIdAndDateOfCreationPhoto(Long accountId, LocalDate dateOfCreationPhoto) {
-        if (Objects.isNull(accountId) || Objects.isNull(dateOfCreationPhoto)) {
-            return null;
-        }
-
         return Specification.where(findAllDateOfDeleteIsNull())
                 .and(findAllByAccountId(accountId))
                 .and(findAllByDateOfCreationPhoto(dateOfCreationPhoto));

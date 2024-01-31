@@ -14,7 +14,7 @@ public class UserSpecification {
 //    TODO make one type name for specification f.e. userByEmail/findUserByEmail/getUserByEmail/ByEmail
     public static Specification<UserProfile> findUserProfileById(Long id) {
 
-        return Objects.isNull(id) ? null : Specification.where(findNotDeletedAccount())
+        return Specification.where(findNotDeletedAccount())
                 .and(findById(id));
     }
 
