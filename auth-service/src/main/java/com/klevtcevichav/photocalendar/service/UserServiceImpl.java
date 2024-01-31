@@ -15,6 +15,7 @@ import com.klevtcevichav.photocalendar.dto.mapper.UserUpdateRequestMapper;
 import com.klevtcevichav.photocalendar.entity.UserProfile;
 import com.klevtcevichav.photocalendar.exception.UserBusinessException;
 import com.klevtcevichav.photocalendar.repository.UserRepository;
+import com.klevtcevichav.photocalendar.specification.UserSpecification;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
         log.info("Start registration user: {}", userRequestDTO);
         UserProfile userProfile = userRequestMapper.userRequestDTOToUser(userRequestDTO);
 
-        if(userRepository.existsByEmailOrUsername(userProfile.getEmail(), userProfile.getUsername())) {
+        if(userRepository.exists(UserSpecification.findByUsernameOrEmail(userProfile.getEmail(), userProfile.getUsername()))) {
             throw new UserBusinessException("This email or username is exist!");
         }
 
@@ -73,7 +74,8 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO updateUser(UserUpdateRequestDTO userUpdateRequestDTO) {
 
         log.info("Start updating user with id: {}", userUpdateRequestDTO.getId());
-        UserProfile userProfile = userRepository.findById(userUpdateRequestDTO.getId()).orElseThrow(() -> new NotFoundException("Not found"));
+        UserProfile userProfile = userRepository.findOne(UserSpecification.findUserProfileById(userUpdateRequestDTO.getId()))
+                .orElseThrow(() -> new NotFoundException("Not found"));
 
         userUpdateRequestMapper.updateUserFromDTO(userUpdateRequestDTO, userProfile);
 
@@ -88,7 +90,8 @@ public class UserServiceImpl implements UserService {
     public SimpleResponseDTO delete(Long id) {
 
         log.info("Start deleting user with id:{}", id);
-        UserProfile userProfile = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found"));
+        UserProfile userProfile = userRepository.findOne(UserSpecification.findUserProfileById(id))
+                .orElseThrow(() -> new NotFoundException("Not found"));
 
         userProfile.setDateOfDelete(LocalDateTime.now());
 
@@ -108,7 +111,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO getUserById(Long id) {
 
         log.info("Start finding user with id: {}", id);
-        UserProfile userProfile = userRepository.findById(id)
+        UserProfile userProfile = userRepository.findOne(UserSpecification.findUserProfileById(id))
                 .orElseThrow(() -> new NotFoundException("User not found with id : " + id)
         );
 
@@ -121,7 +124,7 @@ public class UserServiceImpl implements UserService {
     public SimpleResponseDTO updatePassword(UserUpdatePasswordDTO userUpdatePasswordDTO) {
 
         log.info("Start updating password for user with id: {}", userUpdatePasswordDTO.getId());
-        UserProfile userProfile = userRepository.findById(userUpdatePasswordDTO.getId())
+        UserProfile userProfile = userRepository.findOne(UserSpecification.findUserProfileById(userUpdatePasswordDTO.getId()))
                 .orElseThrow(() -> new NotFoundException("User not found with id : %d".formatted(userUpdatePasswordDTO.getId()))
                 );
 

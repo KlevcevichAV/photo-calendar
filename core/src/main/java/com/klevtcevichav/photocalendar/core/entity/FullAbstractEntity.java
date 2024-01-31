@@ -5,6 +5,7 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldNameConstants
 public abstract class FullAbstractEntity extends AbstractEntity{
     @Column(name = "date_of_creation")
     private LocalDateTime dateOfCreation;

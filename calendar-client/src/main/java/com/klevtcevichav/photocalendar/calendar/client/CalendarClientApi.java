@@ -19,5 +19,8 @@ public interface CalendarClientApi {
                                                     @RequestParam LocalDate to);
 
     @GetMapping("/{day}")
-    ResponseEntity<DayResponseDTO> getDay(@PathVariable LocalDate day, @RequestParam Long accountId);
+    ResponseEntity<DayResponseDTO> getDay(@PathVariable LocalDate day,
+                                          @RequestParam Long accountId,
+                                          @RequestParam(defaultValue = "1") int page,
+                                          @RequestParam(defaultValue = "10") int size);
 }
