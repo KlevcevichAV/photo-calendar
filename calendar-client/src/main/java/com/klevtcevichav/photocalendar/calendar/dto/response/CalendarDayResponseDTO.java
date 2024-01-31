@@ -7,19 +7,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.time.Month;
-import java.util.List;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CalendarResponseDTO extends SimpleResponseDTO {
+public class CalendarDayResponseDTO extends SimpleResponseDTO {
 
-    private Long year;
-    private Month month;
-    private Long numberOfDays;
-    private List<CalendarDayResponseDTO> days;
+    private LocalDate day;
+    private Long numberOfPhotosPerDay;
+    private Long idMainPhotoOfDay;
+    private byte[] mainPhotoOfDay;
 
 }

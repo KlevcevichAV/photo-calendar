@@ -1,18 +1,20 @@
 package com.klevtcevichav.photocalendar.calendar.dto.response;
 
-import com.klevtcevichav.photocalendar.core.dto.AbstractDTO;
+import com.klevtcevichav.photocalendar.core.dto.response.PageResponseDTO;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DayResponseDTO extends AbstractDTO {
+public class DayResponseDTO extends PageResponseDTO {
 
     private LocalDate date;
     private List<PhotoResponseDTO> photos;
+
 }

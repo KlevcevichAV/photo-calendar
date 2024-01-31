@@ -20,9 +20,9 @@ public class CalendarControllerImpl implements CalendarClientApi {
 
     @Override
     @GetMapping
-    public ResponseEntity<CalendarResponseDTO> getCalendar(@RequestParam Long accountId,
-                                                           @RequestParam LocalDate from,
-                                                           @RequestParam LocalDate to) {
+    public ResponseEntity<CalendarResponseDTO> getCalendar(@RequestParam("accountId") Long accountId,
+                                                           @RequestParam("from") LocalDate from,
+                                                           @RequestParam("to") LocalDate to) {
 
         CalendarResponseDTO calendarResponseDTO = calendarService.getCalendar(accountId, from, to);
 
@@ -31,8 +31,11 @@ public class CalendarControllerImpl implements CalendarClientApi {
 
     @Override
     @GetMapping("/days/{day}")
-    public ResponseEntity<DayResponseDTO> getDay(@PathVariable LocalDate day, @RequestParam("accountId") Long accountId) {
-        DayResponseDTO dayResponseDTO = calendarService.getDay(accountId, day);
+    public ResponseEntity<DayResponseDTO> getDay(@PathVariable LocalDate day,
+                                                 @RequestParam("accountId") Long accountId,
+                                                 @RequestParam(name = "page", defaultValue = "0") int page,
+                                                 @RequestParam(name = "size", defaultValue = "10") int size) {
+        DayResponseDTO dayResponseDTO = calendarService.getDay(accountId, day, PageRequest.of(page, size));
 
         return ResponseEntity.ok(dayResponseDTO);
     }
